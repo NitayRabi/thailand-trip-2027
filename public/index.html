@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thailand Feb 2027 – Family Trip Planning</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+              900: '#134e4a',
+            },
+            coral: {
+              500: '#f97316',
+              600: '#ea580c',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    #map {
+      height: 520px;
+      width: 100%;
+      border-radius: 1rem;
+      z-index: 1;
+    }
+    .leaflet-popup-content-wrapper {
+      border-radius: 0.75rem;
+      padding: 0.25rem;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    }
+    .custom-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+  <!-- TOP HEADER -->
+  <header class="bg-gradient-to-r from-teal-800 via-emerald-800 to-teal-900 text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="bg-teal-500/20 p-3 rounded-2xl border border-teal-400/30 text-teal-300 text-2xl">
+          <i class="fa-solid fa-plane-departure"></i>
+        </div>
+        <div>
+          <h1 class="text-xl sm:text-2xl font-bold tracking-tight">Thailand Feb 2027 Family Trip</h1>
+          <p class="text-xs sm:text-sm text-teal-200">Custom Recommendations & Map Guide for Nitay, Adi, Tom (3y) & Lenny (6m)</p>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <span class="bg-teal-900/80 border border-teal-500/40 px-3 py-1.5 rounded-full text-teal-200">
+          <i class="fa-regular fa-calendar-check mr-1 text-teal-400"></i> Feb 2 – Feb 24/25, 2027
+        </span>
+        <span class="bg-teal-900/80 border border-teal-500/40 px-3 py-1.5 rounded-full text-teal-200">
+          <i class="fa-solid fa-users mr-1 text-teal-400"></i> 2 Adults + 2 Kids
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+
+    <!-- HERO TRIP STATS & OVERVIEW -->
+    <section class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl font-bold">
+          <i class="fa-solid fa-calendar-days"></i>
+        </div>
+        <div>
+          <div class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Duration</div>
+          <div class="text-lg font-bold text-slate-900">~22 Days</div>
+          <div class="text-xs text-slate-500">Feb 2 – Feb 25, 2027</div>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center text-xl font-bold">
+          <i class="fa-solid fa-baby-carriage"></i>
+        </div>
+        <div>
+          <div class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Travelers</div>
+          <div class="text-lg font-bold text-slate-900">Nitay, Adi, Tom, Lenny</div>
+          <div class="text-xs text-slate-500">Tom (3y) & Lenny (6m baby)</div>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl font-bold">
+          <i class="fa-solid fa-plane"></i>
+        </div>
+        <div>
+          <div class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Flight Priority</div>
+          <div class="text-lg font-bold text-slate-900">Bassinet & Comfort</div>
+          <div class="text-xs text-slate-500">Emirates (DXB) or EVA Air (Direct)</div>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold">
+          <i class="fa-solid fa-umbrella-beach"></i>
+        </div>
+        <div>
+          <div class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Final Destination</div>
+          <div class="text-lg font-bold text-slate-900">3 Days in Bangkok</div>
+          <div class="text-xs text-slate-500">Chao Phraya Riverside Resort</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAP SECTION WITH INTERACTIVE CONTROLS -->
+    <section class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-map-location-dot text-teal-600"></i> Interactive Trip Map
+          </h2>
+          <p class="text-sm text-slate-600">Explore flight corridors, coastal beach regions, road transfers, and Bangkok stays.</p>
+        </div>
+        
+        <!-- MAP VIEW FILTER BUTTONS -->
+        <div class="flex flex-wrap gap-2 text-xs">
+          <button onclick="showMapView('all')" id="btn-all" class="px-3.5 py-2 rounded-xl font-medium border border-teal-600 bg-teal-600 text-white shadow-sm transition">
+            <i class="fa-solid fa-globe mr-1"></i> Full Overview
+          </button>
+          <button onclick="showMapView('west')" id="btn-west" class="px-3.5 py-2 rounded-xl font-medium border border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+            <i class="fa-solid fa-umbrella-beach mr-1 text-teal-600"></i> West Coast (Phuket & Khao Lak)
+          </button>
+          <button onclick="showMapView('east')" id="btn-east" class="px-3.5 py-2 rounded-xl font-medium border border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+            <i class="fa-solid fa-car mr-1 text-orange-600"></i> East Coast (Hua Hin & Pranburi)
+          </button>
+          <button onclick="showMapView('samui')" id="btn-samui" class="px-3.5 py-2 rounded-xl font-medium border border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+            <i class="fa-solid fa-water mr-1 text-blue-600"></i> Koh Samui
+          </button>
+          <button onclick="showMapView('bkk')" id="btn-bkk" class="px-3.5 py-2 rounded-xl font-medium border border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+            <i class="fa-solid fa-city mr-1 text-amber-600"></i> Bangkok Final
+          </button>
+        </div>
+      </div>
+
+      <!-- LEAFLET MAP CONTAINER -->
+      <div id="map"></div>
+
+      <!-- MAP LEGEND -->
+      <div class="flex flex-wrap items-center justify-between text-xs text-slate-600 pt-2 border-t border-slate-100 gap-3">
+        <div class="flex flex-wrap gap-4">
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-blue-600 inline-block"></span> Airports & Flights</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-teal-600 inline-block"></span> West Coast (Phuket / Khao Lak)</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-orange-600 inline-block"></span> East Coast (Hua Hin / Pranburi)</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-purple-600 inline-block"></span> Koh Samui</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-600 inline-block"></span> Bangkok Stay</span>
+        </div>
+        <span class="text-slate-400 font-mono"><i class="fa-solid fa-hand-pointer text-slate-400 mr-1"></i> Click markers to view recommendations</span>
+      </div>
+    </section>
+
+    <!-- FLIGHT RECOMMENDATIONS SECTION -->
+    <section class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-6">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold mb-2">
+          <i class="fa-solid fa-plane"></i> Outbound & Return Flight Strategy
+        </div>
+        <h2 class="text-2xl font-bold text-slate-900">Flight Recommendations (AMS to Thailand)</h2>
+        <p class="text-sm text-slate-600 mt-1">For a family traveling with a 6-month-old infant (Lenny) and a toddler (Tom, 3y), having an assigned <strong>bassinet</strong> and low-friction flight experience is the #1 priority.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- OPTION A: DIRECT FLIGHT -->
+        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50 hover:border-blue-300 transition space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="custom-badge bg-blue-100 text-blue-800">
+              <i class="fa-solid fa-bolt mr-1"></i> Option A: Direct Flights
+            </span>
+            <span class="text-xs font-semibold text-slate-500">AMS ↔ BKK (~11h 30m)</span>
+          </div>
+
+          <h3 class="text-lg font-bold text-slate-900">EVA Air / KLM (Direct)</h3>
+          
+          <ul class="text-sm text-slate-700 space-y-2.5">
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-teal-600 mt-1"></i>
+              <span><strong>No Mid-Trip Transfers:</strong> Avoid waking kids up for a mid-night connection.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-teal-600 mt-1"></i>
+              <span><strong>EVA Air Return Recommended:</strong> Consistently top-ranked for family hospitality and generous bassinet limits (up to 14-16kg vs KLM's 10kg limit).</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-info text-blue-600 mt-1"></i>
+              <span><strong>Bassinet Strategy:</strong> Call the airline immediately after booking to secure bulkhead seats with bassinet support.</span>
+            </li>
+          </ul>
+
+          <div class="pt-2 border-t border-slate-200/80 flex justify-between items-center text-xs text-slate-500">
+            <span>Primary Airlines: EVA Air, KLM</span>
+            <button onclick="focusLocation(13.6900, 100.7501, 'Bangkok Suvarnabhumi Airport (BKK)')" class="text-blue-600 hover:underline font-semibold">
+              <i class="fa-solid fa-location-dot mr-1"></i> View BKK Airport
+            </button>
+          </div>
+        </div>
+
+        <!-- OPTION B: 1-STOP CONNECTION -->
+        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50 hover:border-blue-300 transition space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="custom-badge bg-teal-100 text-teal-800">
+              <i class="fa-solid fa-couch mr-1"></i> Option B: 1-Stop (1.5-2h Connection)
+            </span>
+            <span class="text-xs font-semibold text-slate-500">AMS → DXB/DOH → BKK/HKT</span>
+          </div>
+
+          <h3 class="text-lg font-bold text-slate-900">Emirates (via Dubai) / Qatar Airways</h3>
+          
+          <ul class="text-sm text-slate-700 space-y-2.5">
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-teal-600 mt-1"></i>
+              <span><strong>Break Up the Journey:</strong> 6.5 hours to Dubai, 1.5–2h connection to stretch legs, then 6 hours to Thailand.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-teal-600 mt-1"></i>
+              <span><strong>World-Class Family Amenities:</strong> Free baby strollers at Dubai (DXB) & Doha (DOH), infant amenity kits (diapers/baby food), quiet A380 cabins.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-teal-600 mt-1"></i>
+              <span><strong>Flexible Arrival:</strong> Allows flying directly into Phuket (HKT) for the West Coast option without going through Bangkok first.</span>
+            </li>
+          </ul>
+
+          <div class="pt-2 border-t border-slate-200/80 flex justify-between items-center text-xs text-slate-500">
+            <span>Primary Airlines: Emirates, Qatar Airways</span>
+            <button onclick="focusLocation(25.2532, 55.3657, 'Dubai International Airport (DXB)')" class="text-blue-600 hover:underline font-semibold">
+              <i class="fa-solid fa-location-dot mr-1"></i> View DXB Hub
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ITINERARY OPTIONS SECTION -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+      <!-- WEST COAST ITINERARY -->
+      <section class="bg-white p-6 rounded-3xl border border-teal-200 shadow-md flex flex-col justify-between space-y-5">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="custom-badge bg-teal-100 text-teal-800">
+              <i class="fa-solid fa-sun mr-1"></i> West Coast Plan (Recommended Beach)
+            </span>
+            <span class="text-xs font-bold text-teal-700">1 Short Flight to BKK</span>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-bold text-slate-900">Phuket (Bang Tao) & Khao Lak</h3>
+            <p class="text-sm text-slate-600 mt-1">Postcard turquoise waters, white sand, extremely family-friendly infrastructure and private road transfers (no boats!).</p>
+          </div>
+
+          <div class="space-y-3">
+            <div class="p-4 rounded-xl bg-teal-50/60 border border-teal-100 flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold text-sm shrink-0">1</div>
+              <div class="text-sm">
+                <div class="font-bold text-slate-900 flex justify-between">
+                  <span>Bang Tao / Laguna (Phuket)</span>
+                  <span class="text-xs text-teal-700 font-normal">7–9 Days</span>
+                </div>
+                <p class="text-slate-600 text-xs mt-1">25 min private van from Phuket Airport (HKT). Flat paved sidewalks (stroller friendly!), high-end family resorts, calm beach clubs with kid pools.</p>
+                <button onclick="focusLocation(7.9922, 98.2934, 'Bang Tao Beach & Laguna')" class="text-teal-700 hover:underline font-semibold text-xs mt-2 inline-block">
+                  <i class="fa-solid fa-location-dot mr-1"></i> Locate on Map
+                </button>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-teal-50/60 border border-teal-100 flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold text-sm shrink-0">2</div>
+              <div class="text-sm">
+                <div class="font-bold text-slate-900 flex justify-between">
+                  <span>Khao Lak</span>
+                  <span class="text-xs text-teal-700 font-normal">7–9 Days</span>
+                </div>
+                <p class="text-slate-600 text-xs mt-1">90 min smooth private van drive north from Bang Tao. Wide beaches with shallow water for 50m+ (safe for Tom to splash around), spacious resort grounds.</p>
+                <button onclick="focusLocation(8.6496, 98.2514, 'Khao Lak Beach Area')" class="text-teal-700 hover:underline font-semibold text-xs mt-2 inline-block">
+                  <i class="fa-solid fa-location-dot mr-1"></i> Locate on Map
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 flex justify-between items-center">
+          <span><i class="fa-solid fa-circle-check text-teal-600 mr-1"></i> Best water quality & tropical beaches</span>
+          <button onclick="showMapView('west')" class="font-bold text-teal-700 hover:underline">Focus West Coast</button>
+        </div>
+      </section>
+
+      <!-- EAST COAST ITINERARY -->
+      <section class="bg-white p-6 rounded-3xl border border-orange-200 shadow-md flex flex-col justify-between space-y-5">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="custom-badge bg-orange-100 text-orange-800">
+              <i class="fa-solid fa-car mr-1"></i> East Coast Plan (Zero Flight Hassle)
+            </span>
+            <span class="text-xs font-bold text-orange-700">100% Private Van (No Extra Flights)</span>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-bold text-slate-900">Hua Hin & Pranburi</h3>
+            <p class="text-sm text-slate-600 mt-1">Land in Bangkok, hop in a comfortable private van, and arrive directly at your beach resort. Zero internal flights required.</p>
+          </div>
+
+          <div class="space-y-3">
+            <div class="p-4 rounded-xl bg-orange-50/60 border border-orange-100 flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-orange-600 text-white flex items-center justify-center font-bold text-sm shrink-0">1</div>
+              <div class="text-sm">
+                <div class="font-bold text-slate-900 flex justify-between">
+                  <span>Hua Hin</span>
+                  <span class="text-xs text-orange-700 font-normal">8–10 Days</span>
+                </div>
+                <p class="text-slate-600 text-xs mt-1">3-hour private drive south from BKK airport. Royal seaside town, long flat beach, modern shopping malls for baby supplies, top-tier international hospital.</p>
+                <button onclick="focusLocation(12.5684, 99.9577, 'Hua Hin Town & Beach')" class="text-orange-700 hover:underline font-semibold text-xs mt-2 inline-block">
+                  <i class="fa-solid fa-location-dot mr-1"></i> Locate on Map
+                </button>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-orange-50/60 border border-orange-100 flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-orange-600 text-white flex items-center justify-center font-bold text-sm shrink-0">2</div>
+              <div class="text-sm">
+                <div class="font-bold text-slate-900 flex justify-between">
+                  <span>Pranburi</span>
+                  <span class="text-xs text-orange-700 font-normal">6–8 Days</span>
+                </div>
+                <p class="text-slate-600 text-xs mt-1">30 minutes south of Hua Hin. Peaceful, boutique resort vibe with quiet beaches. Easy return 3h van drive back to Bangkok at the end.</p>
+                <button onclick="focusLocation(12.3920, 99.9926, 'Pranburi Beach')" class="text-orange-700 hover:underline font-semibold text-xs mt-2 inline-block">
+                  <i class="fa-solid fa-location-dot mr-1"></i> Locate on Map
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 flex justify-between items-center">
+          <span><i class="fa-solid fa-shield-halved text-orange-600 mr-1"></i> Absolute lowest logistical stress</span>
+          <button onclick="showMapView('east')" class="font-bold text-orange-700 hover:underline">Focus East Coast</button>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- BANGKOK FINAL LEG & KOH SAMUI -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- BANGKOK FINAL STAY -->
+      <section class="md:col-span-2 bg-gradient-to-br from-amber-900 via-stone-900 to-amber-950 text-white p-6 rounded-3xl shadow-md flex flex-col justify-between space-y-4">
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="custom-badge bg-amber-400/20 text-amber-300 border border-amber-400/30">
+              <i class="fa-solid fa-building-columns mr-1"></i> Final Trip Leg (3 Days)
+            </span>
+            <span class="text-xs text-amber-200">Feb 22 – Feb 25, 2027</span>
+          </div>
+
+          <h3 class="text-2xl font-bold text-white">Bangkok Riverside Experience</h3>
+          <p class="text-sm text-stone-300">End your vacation with 3 memorable days in Bangkok staying at a riverside resort along the Chao Phraya River (e.g. <strong>Anantara Riverside Bangkok Resort</strong>).</p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-2">
+            <div class="bg-white/10 p-3 rounded-xl border border-white/10">
+              <div class="font-bold text-amber-300 mb-1"><i class="fa-solid fa-ship mr-1"></i> Private Shuttle Boats</div>
+              <span class="text-stone-300">Avoid Bangkok road traffic with stroller-friendly resort boats taking you directly to BTS Skytrain stations and Asiatique night market.</span>
+            </div>
+            <div class="bg-white/10 p-3 rounded-xl border border-white/10">
+              <div class="font-bold text-amber-300 mb-1"><i class="fa-solid fa-tree-city mr-1"></i> Resort Oasis Vibe</div>
+              <span class="text-stone-300">Lush tropical gardens, large family pools, and quiet atmosphere for Lenny & Tom while staying close to the city center.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-white/10 flex justify-between items-center text-xs">
+          <span class="text-amber-200/80">Direct BKK Departure Home on EVA Air / KLM</span>
+          <button onclick="focusLocation(13.7058, 100.4908, 'Anantara Riverside Bangkok')" class="text-amber-300 hover:underline font-bold">
+            <i class="fa-solid fa-location-dot mr-1"></i> Locate Bangkok Stay
+          </button>
+        </div>
+      </section>
+
+      <!-- KOH SAMUI ALTERNATIVE -->
+      <section class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md flex flex-col justify-between space-y-4">
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="custom-badge bg-purple-100 text-purple-800">
+              <i class="fa-solid fa-island-tropical mr-1"></i> Alternative Option
+            </span>
+            <span class="text-xs text-purple-700 font-semibold">Island Fly-In</span>
+          </div>
+
+          <h3 class="text-xl font-bold text-slate-900">Koh Samui</h3>
+          <p class="text-xs text-slate-600">Fly directly into Koh Samui (USM Airport). Excellent infrastructure for toddlers, calm waters, and stroller-friendly areas.</p>
+
+          <ul class="text-xs text-slate-700 space-y-2">
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-dot text-purple-600 mt-1"></i>
+              <span><strong>Bophut / Fisherman's Village:</strong> Paved walking street, safe dining on the sand.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-dot text-purple-600 mt-1"></i>
+              <span><strong>Choeng Mon:</strong> Shallow, gentle crescent bay ideal for Tom & Lenny.</span>
+            </li>
+          </ul>
+        </div>
+
+        <button onclick="focusLocation(9.5532, 100.0658, 'Koh Samui Island')" class="text-xs font-bold text-purple-700 hover:underline text-left">
+          <i class="fa-solid fa-location-dot mr-1"></i> View Koh Samui
+        </button>
+      </section>
+
+    </div>
+
+    <!-- COMPARISON TABLE SECTION -->
+    <section class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900">West Coast vs. East Coast Side-by-Side</h2>
+          <p class="text-sm text-slate-600">Comparison designed specifically for traveling with a 3y toddler & 6m infant.</p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm border-collapse">
+          <thead>
+            <tr class="border-b border-slate-200 bg-slate-50 text-slate-700">
+              <th class="p-3 font-semibold">Feature</th>
+              <th class="p-3 font-semibold text-teal-800">West Coast (Phuket & Khao Lak)</th>
+              <th class="p-3 font-semibold text-orange-800">East Coast (Hua Hin & Pranburi)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-xs sm:text-sm">
+            <tr>
+              <td class="p-3 font-medium text-slate-900">Beach & Water Quality</td>
+              <td class="p-3 text-slate-600">⭐⭐⭐⭐⭐ Postcard blue, clear water, white soft sand</td>
+              <td class="p-3 text-slate-600">⭐⭐⭐ Very long flat beaches, greener water, tidal</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-medium text-slate-900">Logistics & Travel Effort</td>
+              <td class="p-3 text-slate-600">Requires 1 short internal flight (HKT → BKK) at the end</td>
+              <td class="p-3 text-slate-600"><strong>Zero flights!</strong> 3-hour private van drive from BKK</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-medium text-slate-900">Stroller Friendliness</td>
+              <td class="p-3 text-slate-600">Great in Bang Tao/Laguna flat paved resort zones</td>
+              <td class="p-3 text-slate-600">Excellent along Hua Hin promenade, resorts, & malls</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-medium text-slate-900">Infant & Toddler Safety</td>
+              <td class="p-3 text-slate-600">Khao Lak shallow water (50m+ knee-deep) is ideal for Tom</td>
+              <td class="p-3 text-slate-600">Bangkok Hospital Hua Hin nearby; malls for baby AC breaks</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-medium text-slate-900">Vibe & Atmosphere</td>
+              <td class="p-3 text-slate-600">Tropical holiday resort feel, quiet nature in Khao Lak</td>
+              <td class="p-3 text-slate-600">Royal seaside city mix with quiet boutique resorts in Pranburi</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PRO-TIPS & CHECKLIST -->
+    <section class="bg-gradient-to-r from-teal-900 to-emerald-900 text-white p-6 sm:p-8 rounded-3xl shadow-lg space-y-6">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center text-lg">
+          <i class="fa-solid fa-lightbulb"></i>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold">Essential Family Travel Checklist & Pro-Tips</h2>
+          <p class="text-xs text-teal-200">Key advice gathered for smooth flying and effortless ground transport in Thailand.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs sm:text-sm">
+        <div class="bg-white/10 p-5 rounded-2xl border border-white/10 space-y-2">
+          <h3 class="font-bold text-teal-300 flex items-center gap-2">
+            <i class="fa-solid fa-plane-arrival"></i> 1. Bassinet Priority
+          </h3>
+          <p class="text-slate-200 leading-relaxed">
+            Bassinet seats (bulkhead rows) sell out fast. Immediately after flight booking, call the airline call center to lock in bassinet seats for Lenny (6 months).
+          </p>
+        </div>
+
+        <div class="bg-white/10 p-5 rounded-2xl border border-white/10 space-y-2">
+          <h3 class="font-bold text-teal-300 flex items-center gap-2">
+            <i class="fa-solid fa-van-shuttle"></i> 2. Private Van Transfers
+          </h3>
+          <p class="text-slate-200 leading-relaxed">
+            Pre-book private VIP vans for all airport transfers (Phuket to Khao Lak or BKK to Hua Hin). You can request infant car seats & toddler booster seats in advance.
+          </p>
+        </div>
+
+        <div class="bg-white/10 p-5 rounded-2xl border border-white/10 space-y-2">
+          <h3 class="font-bold text-teal-300 flex items-center gap-2">
+            <i class="fa-solid fa-umbrella-beach"></i> 3. Shallow Water Gear
+          </h3>
+          <p class="text-slate-200 leading-relaxed">
+            Bring UV sunsuits and puddle-jumper floaties for Tom (3y), plus a compact travel stroller with a large sun canopy or UV cover for Lenny.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+      <p>Thailand February 2027 Family Vacation Planner • Prepared for Nitay & Adi</p>
+      <p class="text-slate-500">Served via Dokploy & Cloudflare Tunnel at <a href="https://thailand.nyr-solutions.org" target="_blank" class="text-teal-400 underline">thailand.nyr-solutions.org</a></p>
+    </div>
+  </footer>
+
+  <!-- LEAFLET MAP SCRIPT & DATA -->
+  <script>
+    // Initialize Map centered near Thailand / SE Asia
+    const map = L.map('map').setView([11.5000, 99.5000], 6);
+
+    // OpenStreetMap Tile Layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Custom Icon Creators
+    function createIcon(color) {
+      return L.divIcon({
+        className: 'custom-map-pin',
+        html: `<div style="background-color: ${color}; width: 22px; height: 22px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);"></div>`,
+        iconSize: [22, 22],
+        iconAnchor: [11, 11]
+      });
+    }
+
+    const icons = {
+      airport: createIcon('#2563eb'), // Blue
+      west: createIcon('#0d9488'),    // Teal
+      east: createIcon('#ea580c'),    // Orange
+      samui: createIcon('#9333ea'),   // Purple
+      bkk: createIcon('#d97706')      // Amber
+    };
+
+    // Locations Data
+    const locations = [
+      {
+        name: "Bangkok Suvarnabhumi Airport (BKK)",
+        lat: 13.6900, lng: 100.7501,
+        type: "airport",
+        desc: "Main international gateway. Arrival hub for direct flights or starting point for Hua Hin drive."
+      },
+      {
+        name: "Phuket International Airport (HKT)",
+        lat: 8.1132, lng: 98.3169,
+        type: "airport",
+        desc: "West Coast airport hub. 25m to Bang Tao, 90m to Khao Lak."
+      },
+      {
+        name: "Dubai International Airport (DXB)",
+        lat: 25.2532, lng: 55.3657,
+        type: "airport",
+        desc: "Emirates 1-stop connection hub. Free baby strollers & quiet family spaces."
+      },
+      {
+        name: "Bang Tao / Laguna (Phuket)",
+        lat: 7.9922, lng: 98.2934,
+        type: "west",
+        desc: "<strong>West Coast Option 1:</strong> Flat paved sidewalks, high-end family resorts, calm beach clubs."
+      },
+      {
+        name: "Khao Lak Beach Area",
+        lat: 8.6496, lng: 98.2514,
+        type: "west",
+        desc: "<strong>West Coast Option 2:</strong> 90m private van drive north. Shallow, calm beaches (50m+ knee-deep for Tom)."
+      },
+      {
+        name: "Hua Hin Town & Beach",
+        lat: 12.5684, lng: 99.9577,
+        type: "east",
+        desc: "<strong>East Coast Option 1:</strong> 3h private van drive from BKK. Royal beach town, malls, Bangkok Hospital."
+      },
+      {
+        name: "Pranburi Beach",
+        lat: 12.3920, lng: 99.9926,
+        type: "east",
+        desc: "<strong>East Coast Option 2:</strong> 30m south of Hua Hin. Quiet, boutique beach vibe."
+      },
+      {
+        name: "Koh Samui (Bophut / Choeng Mon)",
+        lat: 9.5532, lng: 100.0658,
+        type: "samui",
+        desc: "<strong>Island Alternative:</strong> Direct flight access via USM airport. Fisherman's village walking street."
+      },
+      {
+        name: "Anantara Riverside Bangkok",
+        lat: 13.7058, lng: 100.4908,
+        type: "bkk",
+        desc: "<strong>Final 3 Days:</strong> Lush resort stay on Chao Phraya river with private shuttle boats to Skytrain."
+      }
+    ];
+
+    const mapMarkers = [];
+
+    // Add Markers to Map
+    locations.forEach(loc => {
+      const marker = L.marker([loc.lat, loc.lng], { icon: icons[loc.type] || icons.west }).addTo(map);
+      marker.bindPopup(`
+        <div class="text-slate-800 p-1">
+          <h4 class="font-bold text-sm text-slate-900">${loc.name}</h4>
+          <p class="text-xs text-slate-600 mt-1">${loc.desc}</p>
+        </div>
+      `);
+      mapMarkers.push({ name: loc.name, marker: marker, lat: loc.lat, lng: loc.lng, type: loc.type });
+    });
+
+    // Polylines for Routes
+    const routeWest = L.polyline([
+      [8.1132, 98.3169], // HKT Airport
+      [7.9922, 98.2934], // Bang Tao
+      [8.6496, 98.2514]  // Khao Lak
+    ], { color: '#0d9488', weight: 4, dashArray: '6, 8', opacity: 0.8 }).addTo(map);
+
+    const routeEast = L.polyline([
+      [13.6900, 100.7501], // BKK Airport
+      [12.5684, 99.9577],  // Hua Hin
+      [12.3920, 99.9926]   // Pranburi
+    ], { color: '#ea580c', weight: 4, dashArray: '6, 8', opacity: 0.8 }).addTo(map);
+
+    // Map View Switcher Function
+    function showMapView(view) {
+      // Reset button styles
+      ['all', 'west', 'east', 'samui', 'bkk'].forEach(id => {
+        const btn = document.getElementById(`btn-${id}`);
+        if (btn) {
+          btn.className = "px-3.5 py-2 rounded-xl font-medium border border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+        }
+      });
+      const activeBtn = document.getElementById(`btn-${view}`);
+      if (activeBtn) {
+        activeBtn.className = "px-3.5 py-2 rounded-xl font-medium border border-teal-600 bg-teal-600 text-white shadow-sm transition";
+      }
+
+      if (view === 'all') {
+        map.flyTo([11.5000, 99.5000], 6, { duration: 1.2 });
+      } else if (view === 'west') {
+        map.flyTo([8.3000, 98.2800], 9, { duration: 1.2 });
+      } else if (view === 'east') {
+        map.flyTo([12.8000, 100.2000], 8, { duration: 1.2 });
+      } else if (view === 'samui') {
+        map.flyTo([9.5532, 100.0658], 11, { duration: 1.2 });
+      } else if (view === 'bkk') {
+        map.flyTo([13.7058, 100.4908], 11, { duration: 1.2 });
+      }
+    }
+
+    // Function to focus a specific location
+    function focusLocation(lat, lng, title) {
+      map.flyTo([lat, lng], 11, { duration: 1.2 });
+      const target = mapMarkers.find(m => Math.abs(m.lat - lat) < 0.01 && Math.abs(m.lng - lng) < 0.01);
+      if (target) {
+        setTimeout(() => target.marker.openPopup(), 1200);
+      }
+    }
+  </script>
+</body>
+</html>
