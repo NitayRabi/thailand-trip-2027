@@ -172,19 +172,19 @@
         </div>
       </div>
 
-      <!-- 3 STRATEGY CARDS -->
+            <!-- 3 STRATEGY CARDS -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         
         <!-- OPTION 1 -->
         <button onclick="selectOption(1)" id="opt-btn-1" class="text-left p-5 rounded-2xl border-2 border-teal-600 bg-teal-50/20 shadow-md transition relative group">
           <div class="flex items-center justify-between mb-2">
-            <span class="badge bg-teal-600 text-white">Top Family Balance</span>
+            <span class="badge bg-teal-600 text-white">Krabi Coast Included</span>
             <span class="text-xs font-bold text-teal-700 font-mono">3 Bases • Road Only</span>
           </div>
-          <h3 class="text-lg font-bold text-slate-900 group-hover:text-teal-700 transition">Option 1: North & South Phuket + Khao Lak</h3>
-          <p class="text-xs text-slate-600 mt-1"><strong>Khao Lak (9n) &rarr; Kata Noi (7n) &rarr; Bang Tao (5n)</strong>. Calm shallow water, Eden's top-rated Katathani beach resort, and luxury flat strolls at Laguna.</p>
+          <h3 class="text-lg font-bold text-slate-900 group-hover:text-teal-700 transition">Option 1: The Andaman Trio (With Krabi)</h3>
+          <p class="text-xs text-slate-600 mt-1"><strong>Bang Tao (6n) &rarr; Khao Lak (9n) &rarr; Krabi Coast (6n)</strong>. Dramatic limestone karst scenery from mainland resorts (Sofitel / Phulay Bay) with zero boats.</p>
           <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
-            <span>JW Marriott + Katathani + SAii Laguna</span>
+            <span>Laguna + JW Marriott + Krabi Coast</span>
             <i class="fa-solid fa-chevron-right text-teal-600"></i>
           </div>
         </button>
@@ -192,13 +192,13 @@
         <!-- OPTION 2 -->
         <button onclick="selectOption(2)" id="opt-btn-2" class="text-left p-5 rounded-2xl border-2 border-slate-200 bg-white hover:border-slate-300 shadow-sm transition relative group">
           <div class="flex items-center justify-between mb-2">
-            <span class="badge bg-blue-100 text-blue-800">Private Cove & Nature</span>
+            <span class="badge bg-blue-100 text-blue-800">Eden's Top Pick</span>
             <span class="text-xs font-bold text-blue-700 font-mono">3 Bases • Road Only</span>
           </div>
-          <h3 class="text-lg font-bold text-slate-900 group-hover:text-blue-700 transition">Option 2: The Secluded Cove & Lagoon</h3>
-          <p class="text-xs text-slate-600 mt-1"><strong>Khao Lak (8n) &rarr; Tri Trang / Merlin Beach (8n) &rarr; Bang Tao (5n)</strong>. Features Phuket Marriott Merlin Beach (private secluded cove, coral reef & butterfly sanctuary).</p>
+          <h3 class="text-lg font-bold text-slate-900 group-hover:text-blue-700 transition">Option 2: North & South Phuket + Khao Lak</h3>
+          <p class="text-xs text-slate-600 mt-1"><strong>Khao Lak (9n) &rarr; Kata Noi (7n) &rarr; Bang Tao (5n)</strong>. Calm shallow water, Eden's top-rated Katathani beachfront resort on Kata Noi, and flat Laguna strolls.</p>
           <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
-            <span>JW Marriott + Marriott Merlin + Laguna</span>
+            <span>JW Marriott + Katathani + SAii Laguna</span>
             <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-blue-600"></i>
           </div>
         </button>
@@ -206,13 +206,13 @@
         <!-- OPTION 3 -->
         <button onclick="selectOption(3)" id="opt-btn-3" class="text-left p-5 rounded-2xl border-2 border-slate-200 bg-white hover:border-slate-300 shadow-sm transition relative group">
           <div class="flex items-center justify-between mb-2">
-            <span class="badge bg-purple-100 text-purple-800">Coast & Water Fun</span>
-            <span class="text-xs font-bold text-purple-700 font-mono">3 Bases • Road Only</span>
+            <span class="badge bg-purple-100 text-purple-800">Grand Explorer</span>
+            <span class="text-xs font-bold text-purple-700 font-mono">4 Bases • Road Loop</span>
           </div>
-          <h3 class="text-lg font-bold text-slate-900 group-hover:text-purple-700 transition">Option 3: The Golden Beach & Waterpark Arc</h3>
-          <p class="text-xs text-slate-600 mt-1"><strong>Bang Tao (6n) &rarr; Khao Lak (9n) &rarr; Karon Beach (6n)</strong>. Stays at Phuket Emerald Beach Resort with its dedicated kids waterpark right on the sand.</p>
+          <h3 class="text-lg font-bold text-slate-900 group-hover:text-purple-700 transition">Option 3: The 4-Base Grand Explorer</h3>
+          <p class="text-xs text-slate-600 mt-1"><strong>Bang Tao (5n) &rarr; Khao Lak (7n) &rarr; Krabi Coast (5n) &rarr; Kata Noi / South Phuket (4n)</strong>. Maximum variety across the Andaman coast while maintaining door-to-door VIP vans.</p>
           <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
-            <span>Laguna + JW Marriott + Emerald Karon</span>
+            <span>Laguna + Khao Lak + Krabi + Kata Noi</span>
             <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-purple-600"></i>
           </div>
         </button>
@@ -404,189 +404,347 @@
 
     // --- ITINERARY ARCHITECTURE: 3 OPTIONS, 3 BASES EACH, FULL 22 DAYS ---
     const itineraries = {
-      1: {
-        id: 1,
-        name: "Option 1: North & South Phuket + Khao Lak",
-        tag: "Top Family Balance",
-        summary: "Starts in tranquil shallow Khao Lak (JW Marriott), moves south to the secluded soft-sand bay of Kata Noi (Katathani from Eden's guide), and finishes in upscale stroller-friendly Bang Tao (SAii Laguna).",
-        bases: [
+  "1": {
+    "id": 1,
+    "name": "Option 1: The Andaman Trio (With Krabi)",
+    "tag": "Krabi Coast Included (3 Bases)",
+    "summary": "3 bases connected 100% by scenic highways (zero ferries). Connects Bang Tao / Laguna (Phuket), Khao Lak (JW Marriott), and the mainland limestone coast of Krabi (Klong Muang).",
+    "bases": [
+      {
+        "id": "opt1-b1",
+        "name": "Base 1: Bang Tao / Laguna (6 Nights)",
+        "dates": "Feb 3 \u2013 Feb 9, 2027",
+        "location": "Bang Tao Beach & Laguna Enclave",
+        "lat": 7.9922,
+        "lng": 98.2934,
+        "transfer": "25 min smooth road transfer from HKT Airport",
+        "vibe": "Gentle soft landing, stroller-friendly paved sidewalks, supermarkets, gated community.",
+        "stayRec": "SAii Laguna Phuket (or Dusit Thani / Angsana)",
+        "overview": "Start right near the airport so the kids don't have a long drive after landing from Dubai. Settle into the flat Laguna resort enclave with tree-shaded paths, free lagoon ferry boats, and Boat Avenue dining.",
+        "days": [
           {
-            id: "opt1-b1",
-            name: "Base 1: Khao Lak (9 Nights)",
-            dates: "Feb 3 – Feb 12, 2027",
-            location: "Khuk Khak Beach, Khao Lak",
-            lat: 8.6830, lng: 98.2405,
-            transfer: "75 min private VIP van north from HKT Airport",
-            vibe: "Shallowest safest waters in Thailand, 2.4km lagoon pool, AC kids club.",
-            stayRec: "JW Marriott Khao Lak Resort & Spa (or Devasom)",
-            overview: "Step off the flight from Dubai and immediately settle into pure tranquility. In Khao Lak, the water stays ankle-to-knee deep for 50+ meters with zero waves, giving Tom (3y) the safest possible introduction to the ocean while Lenny (6m) naps comfortably in shade or AC.",
-            days: [
-              { day: "Day 1 (Wed, Feb 3)", title: "Arrival & Soft Landing", desc: "Land HKT at 07:15 AM. Smooth 75m private van to Khao Lak. Check-in, unpack, splash in the shallow lagoon pool, relax after travel." },
-              { day: "Day 2 (Thu, Feb 4)", title: "Resort Beach & Lagoon Life", desc: "Gentle morning at Khuk Khak beach. Midday heat in Family by JW air-conditioned soft-play club. Sunset cocktail by the sand." },
-              { day: "Day 3 (Fri, Feb 5)", title: "Aqua Play Splash Morning", desc: "Tom plays in the interactive fountains and wave pool. Shaded poolside cabana for Lenny's morning and afternoon naps." },
-              { day: "Day 4 (Sat, Feb 6)", title: "Thai Navy Sea Turtle Sanctuary", desc: "Easy 20-minute local excursion to the Royal Navy Turtle Conservation Center to feed rehabilitated green sea turtles." },
-              { day: "Day 5 (Sun, Feb 7)", title: "Devasom Lagoon & Memories Beach", desc: "Stroll along the calm natural lagoon at Khuk Khak. Visit Memories Beach Bar for fresh fruit smoothies and chilled music." },
-              { day: "Day 6 (Mon, Feb 8)", title: "Poolside Relaxation & Spa", desc: "Parents take turns for beachfront Thai massages while kids enjoy the toddler wading areas." },
-              { day: "Day 7 (Tue, Feb 9)", title: "Bang Niang Market Visit", desc: "Late afternoon walk through the local night market for fresh mango sticky rice, coconut pancakes, and souvenirs." },
-              { day: "Day 8 (Wed, Feb 10)", title: "Beach Combing & Sandcastles", desc: "Morning low tide creates huge shallow sandbars perfect for shell collecting with Tom and breezy stroller pushing." },
-              { day: "Day 9 (Thu, Feb 11)", title: "Final Khao Lak Sunset", desc: "Long sunset beach dinner with feet in the sand. Pack bags comfortably for tomorrow's transfer south." }
-            ]
+            "day": "Day 1 (Wed, Feb 3)",
+            "title": "Arrival & Soft Landing",
+            "desc": "Land at HKT 07:15 AM. Quick 25-min transfer to Laguna. Check in, swim in shallow lagoon pool, relax after travel."
           },
           {
-            id: "opt1-b2",
-            name: "Base 2: Kata Noi Beach, South Phuket (7 Nights)",
-            dates: "Feb 12 – Feb 19, 2027",
-            location: "Kata Noi Beach, South Phuket",
-            lat: 7.8050, lng: 98.2990,
-            transfer: "1h 45m scenic highway van drive south through Phuket",
-            vibe: "First-line beach resort, sheltered turquoise cove, toddler splash pools.",
-            stayRec: "Katathani Phuket Beach Resort (from Eden's guide)",
-            overview: "Kata Noi is one of Phuket's most beautiful coves — tucked away behind green headlands with no through-traffic. Katathani sits directly on the white sand with multiple dedicated toddler pools, lush oceanfront lawns, and peaceful walking.",
-            days: [
-              { day: "Day 10 (Fri, Feb 12)", title: "Transfer to South Phuket", desc: "Morning VIP van drive south across Sarasin Bridge to Kata Noi (1h 45m). Check into Katathani beachfront resort." },
-              { day: "Day 11 (Sat, Feb 13)", title: "Kata Noi Beach Splashing", desc: "Enjoy the fine white sand and clear turquoise water. Tom plays in Katathani's mini water playground." },
-              { day: "Day 12 (Sun, Feb 14)", title: "Windmill Viewpoint & Nai Harn", desc: "Short 10-min drive to Windmill Viewpoint and the shaded freshwater promenade of Nai Harn lake for an easy stroller stroll." },
-              { day: "Day 13 (Mon, Feb 15)", title: "Resort Lawns & Pool Day", desc: "Relax under swaying palm trees on the oceanfront grass. Safe fenced toddler wading pool right beside the loungers." },
-              { day: "Day 14 (Tue, Feb 16)", title: "Rawai Seafood Promenade", desc: "Early evening dinner in nearby Rawai overlooking the traditional longtail boats. Great fresh grilled fish and mango shakes." },
-              { day: "Day 15 (Wed, Feb 17)", title: "Kids Club & Crafts", desc: "Indoor air-conditioned play at Katathani's Chang Noi Kids Club during the midday sun (12:00–15:00)." },
-              { day: "Day 16 (Thu, Feb 18)", title: "Sunset Over Kata Bay", desc: "Enjoy a gourmet dinner at The Harbor or Mom Tri's Kitchen overlooking the Andaman Sea." }
-            ]
+            "day": "Day 2 (Thu, Feb 4)",
+            "title": "Laguna Strolling & Canal Boat",
+            "desc": "Take the open-air resort lagoon shuttle boat. Stroll paved paths with Lenny's stroller."
           },
           {
-            id: "opt1-b3",
-            name: "Base 3: Bang Tao / Laguna, Phuket (5 Nights)",
-            dates: "Feb 19 – Feb 24, 2027",
-            location: "Bang Tao Beach & Laguna Enclave",
-            lat: 7.9922, lng: 98.2934,
-            transfer: "45 min drive north to Laguna (only 25 min from airport)",
-            vibe: "Paved flat stroller paths, Boat Avenue dining, stress-free departure base.",
-            stayRec: "SAii Laguna Phuket (or Dusit Thani / Angsana)",
-            overview: "Finish the holiday in Phuket's premier gated resort enclave. Wide flat sidewalks, free shuttle boats across the internal lagoons, organic baby markets, and top restaurants at Boat Avenue and Porto de Phuket — all just 25 minutes from the airport.",
-            days: [
-              { day: "Day 17 (Fri, Feb 19)", title: "Settle into Laguna Enclave", desc: "Easy 45-min transfer north. Check into SAii Laguna Phuket. Hop on the free open-air resort canal ferry with Tom." },
-              { day: "Day 18 (Sat, Feb 20)", title: "Boat Avenue & Laguna Dining", desc: "Stroll along wide tree-lined sidewalks to Boat Avenue. Great bakeries, Italian trattorias, and baby supply shops." },
-              { day: "Day 19 (Sun, Feb 21)", title: "Bang Tao Beach & Waterslide", desc: "Tom loves SAii's 55-meter pool waterslide and lagoon pool. Sunset beach walk with Lenny's stroller." },
-              { day: "Day 20 (Mon, Feb 22)", title: "Porto de Phuket & Relaxation", desc: "Visit Porto de Phuket open-air lifestyle mall. Relax at Catch Beach Club for a chilled family beachfront lunch." },
-              { day: "Day 21 (Tue, Feb 23)", title: "Final Celebratory Dinner", desc: "Unrushed day poolside, final dip in the Andaman Sea, leisurely packing, and sunset dinner on the sand." },
-              { day: "Day 22 (Wed, Feb 24)", title: "Easy Airport Departure", desc: "Stress-free 25-minute morning transfer to HKT Airport for your 09:20 AM Emirates flight back home (EK 391)." }
-            ]
+            "day": "Day 3 (Fri, Feb 5)",
+            "title": "Bang Tao Beach Morning",
+            "desc": "Gentle morning at the beach. Shaded lounger naps for Lenny; sandcastles with Tom."
+          },
+          {
+            "day": "Day 4 (Sat, Feb 6)",
+            "title": "Boat Avenue & Family Dining",
+            "desc": "Explore Boat Avenue shops, organic bakeries, and comfortable family-friendly restaurants."
+          },
+          {
+            "day": "Day 5 (Sun, Feb 7)",
+            "title": "Resort Pool & Waterslide",
+            "desc": "Tom enjoys SAii's 55m pool slide; quiet poolside cabana for baby nap times."
+          },
+          {
+            "day": "Day 6 (Mon, Feb 8)",
+            "title": "Sunset Beach Dinner",
+            "desc": "Dinner right on the sand with feet in the water while kids play safely."
           }
         ]
       },
-
-      2: {
-        id: 2,
-        name: "Option 2: The Secluded Cove & Lagoon",
-        tag: "Private Cove & Nature",
-        summary: "Features Phuket Marriott Resort & Spa, Merlin Beach (from Eden's guide) in its own private jungle-flanked cove with coral reef and butterfly sanctuary, paired with Khao Lak and Bang Tao.",
-        bases: [
+      {
+        "id": "opt1-b2",
+        "name": "Base 2: Khao Lak (9 Nights)",
+        "dates": "Feb 9 \u2013 Feb 18, 2027",
+        "location": "Khuk Khak Beach, Khao Lak",
+        "lat": 8.683,
+        "lng": 98.2405,
+        "transfer": "80 min highway drive north across Sarasin Bridge",
+        "vibe": "Knee-deep shallow water for 50m+, massive 2.4km lagoon pool, AC kids club.",
+        "stayRec": "JW Marriott Khao Lak Resort & Spa",
+        "overview": "The relaxation heart of the vacation. Unrivaled shallow water safety where Tom can splash safely without waves, while parents enjoy 5-star Marriott luxury and indoor AC kids facilities.",
+        "days": [
           {
-            id: "opt2-b1",
-            name: "Base 1: Khao Lak (8 Nights)",
-            dates: "Feb 3 – Feb 11, 2027",
-            location: "Khao Lak (Khuk Khak)",
-            lat: 8.6830, lng: 98.2405,
-            transfer: "75 min private VIP van north from HKT",
-            vibe: "Shallow waters, peaceful family resort living.",
-            stayRec: "JW Marriott Khao Lak",
-            overview: "Begin with 8 restful nights in Khao Lak recovering from the long journey and enjoying Southeast Asia's longest lagoon pool.",
-            days: [
-              { day: "Day 1–2 (Feb 3–4)", title: "Arrival & Lagoon Life", desc: "Landing at HKT, VIP van to JW Marriott, easy swimming in the shallow lagoon." },
-              { day: "Day 3–5 (Feb 5–7)", title: "Turtle Sanctuary & Sand Fun", desc: "Visit baby sea turtles, enjoy afternoon soft play in AC kids club." },
-              { day: "Day 6–8 (Feb 8–10)", title: "Slow Paced Sunsets", desc: "Breezy beach walks, massage by the sea, family dinners on the beach." }
-            ]
+            "day": "Day 7 (Tue, Feb 9)",
+            "title": "Scenic Drive to Khao Lak",
+            "desc": "Comfortable highway van ride north across Sarasin Bridge (80 min). Check into JW Marriott."
           },
           {
-            id: "opt2-b2",
-            name: "Base 2: Tri Trang / Merlin Beach (8 Nights)",
-            dates: "Feb 11 – Feb 19, 2027",
-            location: "Merlin Beach, South-West Patong Peninsula",
-            lat: 7.8830, lng: 98.2750,
-            transfer: "1h 35m highway van drive south",
-            vibe: "Completely private cove, coral reef, butterfly sanctuary, 3 huge pools.",
-            stayRec: "Phuket Marriott Resort & Spa, Merlin Beach (from Eden's guide)",
-            overview: "Nestled on its own private bay (Tri Trang / Merlin Beach) far from city noise. Features an indigenous reef education center, a live butterfly sanctuary that toddlers adore, and three lagoon pools.",
-            days: [
-              { day: "Day 9 (Feb 11)", title: "Drive to Merlin Beach Cove", desc: "Scenic transfer south. Check into secluded 5-star beachfront haven." },
-              { day: "Day 10–12 (Feb 12–14)", title: "Reef & Butterfly Sanctuary", desc: "Tom discovers colorful butterflies in the sanctuary and explores tide pools with marine biologists." },
-              { day: "Day 13–16 (Feb 15–18)", title: "Lagoon Pools & Private Beach", desc: "Swim across 3 lagoon pools with swim-up bar, splash pool, and quiet cove sunsets." }
-            ]
+            "day": "Day 8\u201310 (Feb 10\u201312)",
+            "title": "Lagoon Living & Aqua Play",
+            "desc": "Explore the 2.4km winding lagoon pool, interactive wave pool, and indoor Family by JW play club."
           },
           {
-            id: "opt2-b3",
-            name: "Base 3: Bang Tao / Laguna (5 Nights)",
-            dates: "Feb 19 – Feb 24, 2027",
-            location: "Bang Tao Beach",
-            lat: 7.9922, lng: 98.2934,
-            transfer: "35 min drive north to Laguna",
-            vibe: "Flat sidewalks, high-end family dining, 25 min to airport.",
-            stayRec: "SAii Laguna Phuket",
-            overview: "The perfect calm finale. Uninterrupted stroller walks, Boat Avenue, and quick 25-minute hop to Phuket airport on departure day.",
-            days: [
-              { day: "Day 17–20 (Feb 19–22)", title: "Laguna Strolling & Boat Avenue", desc: "Flat walks, boat shuttles, top cafes and relaxed family dining." },
-              { day: "Day 21–22 (Feb 23–24)", title: "Final Sunset & Airport Hop", desc: "Final day at beach, pack comfortably, and quick 25m transfer to HKT for EK 391." }
-            ]
+            "day": "Day 11 (Sat, Feb 13)",
+            "title": "Thai Navy Turtle Sanctuary",
+            "desc": "Short 20-min visit to the sea turtle conservation center to see and feed baby turtles."
+          },
+          {
+            "day": "Day 12\u201314 (Feb 14\u201316)",
+            "title": "Devasom Lagoon & Memories Beach",
+            "desc": "Calm natural freshwater lagoon walks, shaded beach bar smoothies, long massage pavilion afternoons."
+          },
+          {
+            "day": "Day 15 (Wed, Feb 17)",
+            "title": "Sunset Beach Feast",
+            "desc": "Final sunset in Khao Lak with gourmet Thai seafood by the waves."
           }
         ]
       },
-
-      3: {
-        id: 3,
-        name: "Option 3: The Golden Beach & Waterpark Arc",
-        tag: "Coast & Water Fun",
-        summary: "Pairs Bang Tao and Khao Lak with Karon Beach's Phuket Emerald Beach Resort (from Eden's guide), featuring its dedicated kids waterpark right on the sand.",
-        bases: [
+      {
+        "id": "opt1-b3",
+        "name": "Base 3: Krabi Coast - Klong Muang (6 Nights)",
+        "dates": "Feb 18 \u2013 Feb 24, 2027",
+        "location": "Klong Muang / Tubkaek Beach, Krabi",
+        "lat": 8.055,
+        "lng": 98.762,
+        "transfer": "2h 15m scenic highway van drive southeast from Khao Lak",
+        "vibe": "Spectacular limestone karst views, quiet mainland beach, peaceful luxury.",
+        "stayRec": "Sofitel Krabi Phokeethra / Phulay Bay Ritz-Carlton",
+        "overview": "Experience the legendary dramatic limestone cliff scenery of Krabi without setting foot on a boat. Klong Muang is a calm, upscale mainland bay with huge resort grounds, tranquil shallow seas, and direct road access back to Phuket airport.",
+        "days": [
           {
-            id: "opt3-b1",
-            name: "Base 1: Bang Tao / Laguna (6 Nights)",
-            dates: "Feb 3 – Feb 9, 2027",
-            location: "Bang Tao Beach",
-            lat: 7.9922, lng: 98.2934,
-            transfer: "25 min smooth van from HKT Airport",
-            vibe: "Gentle soft landing, supermarkets, gated community.",
-            stayRec: "SAii Laguna Phuket",
-            overview: "Land from Dubai and arrive at your hotel in just 25 minutes. Ideal soft start with all baby amenities immediately at hand.",
-            days: [
-              { day: "Day 1–3 (Feb 3–5)", title: "Soft Landing & Acclimatization", desc: "Recover from flights, stroll Laguna paved paths, swim in calm resort pools." },
-              { day: "Day 4–6 (Feb 6–8)", title: "Boat Avenue & Beach Clubs", desc: "Easy family lunches, shaded afternoon naps, lagoon boat rides." }
-            ]
+            "day": "Day 16 (Thu, Feb 18)",
+            "title": "Scenic Drive to Krabi Coast",
+            "desc": "Drive along Route 4 through Phang Nga's lush karst mountains (2h 15m). Check into mainland beach resort."
           },
           {
-            id: "opt3-b2",
-            name: "Base 2: Khao Lak (9 Nights)",
-            dates: "Feb 9 – Feb 18, 2027",
-            location: "Khao Lak (Khuk Khak)",
-            lat: 8.6830, lng: 98.2405,
-            transfer: "80 min highway drive north across Sarasin Bridge",
-            vibe: "Knee-deep shallow water, 2.4km lagoon, nature.",
-            stayRec: "JW Marriott Khao Lak",
-            overview: "The deep relaxation middle of the holiday. Unrivaled shallow water safety for Tom and peace for Lenny.",
-            days: [
-              { day: "Day 7–10 (Feb 9–12)", title: "Lagoon Paradise & AC Club", desc: "Aqua play for Tom, indoor Family by JW soft play, beach strolls." },
-              { day: "Day 11–15 (Feb 13–17)", title: "Turtle Sanctuary & Slow Days", desc: "Visit turtles, long quiet beachfront walks, massage by the pool." }
-            ]
+            "day": "Day 17\u201319 (Feb 19\u201321)",
+            "title": "Limestone Panoramas & Pools",
+            "desc": "Relax by Thailand's largest free-form pool at Sofitel. Enjoy postcard views of offshore karst islands."
           },
           {
-            id: "opt3-b3",
-            name: "Base 3: Karon Beach (6 Nights)",
-            dates: "Feb 18 – Feb 24, 2027",
-            location: "Karon Beach, Central Phuket",
-            lat: 7.8350, lng: 98.2970,
-            transfer: "1h 40m drive south from Khao Lak",
-            vibe: "Dedicated kids waterpark, wide golden sand, modern family suites.",
-            stayRec: "Phuket Emerald Beach Resort (from Eden's guide)",
-            overview: "Brand-new 5-star beachfront resort in Karon featuring a mini water park with toddler slides, kids club, and long golden sands.",
-            days: [
-              { day: "Day 16–18 (Feb 18–20)", title: "Emerald Waterpark Fun", desc: "Tom has a blast on the kids slides; relaxing pool access for parents." },
-              { day: "Day 19–21 (Feb 21–23)", title: "Karon Beach Promenade & Sunsets", desc: "Long sunset strolls on Karon promenade, beachside seafood." },
-              { day: "Day 22 (Feb 24)", title: "Transfer to Airport & Home", desc: "55-minute highway drive to HKT for morning flight EK 391 back home." }
-            ]
+            "day": "Day 20 (Sun, Feb 22)",
+            "title": "Tubkaek Beach Stroll",
+            "desc": "Extremely flat, shallow water at low tide \u2014 ideal for toddler wading and baby stroller walks."
+          },
+          {
+            "day": "Day 21 (Mon, Feb 23)",
+            "title": "Final Andaman Sunset",
+            "desc": "Celebrate your last evening overlooking the illuminated limestone cliffs of Phang Nga Bay."
+          },
+          {
+            "day": "Day 22 (Tue, Feb 24)",
+            "title": "Direct Highway Drive to Airport",
+            "desc": "Smooth 2h 10m morning highway van direct to HKT Airport for your 09:20 AM Emirates departure (EK 391)."
           }
         ]
       }
-    };
+    ]
+  },
+  "2": {
+    "id": 2,
+    "name": "Option 2: North & South Phuket + Khao Lak",
+    "tag": "Eden's Top Pick (3 Bases)",
+    "summary": "Starts in tranquil shallow Khao Lak (JW Marriott), moves south to the secluded soft-sand bay of Kata Noi (Katathani from Eden's guide), and finishes in upscale stroller-friendly Bang Tao (SAii Laguna).",
+    "bases": [
+      {
+        "id": "opt2-b1",
+        "name": "Base 1: Khao Lak (9 Nights)",
+        "dates": "Feb 3 \u2013 Feb 12, 2027",
+        "location": "Khuk Khak Beach, Khao Lak",
+        "lat": 8.683,
+        "lng": 98.2405,
+        "transfer": "75 min private VIP van north from HKT Airport",
+        "vibe": "Shallowest safest waters in Thailand, 2.4km lagoon pool, AC kids club.",
+        "stayRec": "JW Marriott Khao Lak Resort & Spa",
+        "overview": "Step off the flight from Dubai and immediately settle into pure tranquility. Water stays ankle-to-knee deep for 50+ meters with zero waves, giving Tom (3y) the safest introduction to the ocean while Lenny (6m) naps comfortably.",
+        "days": [
+          {
+            "day": "Day 1 (Wed, Feb 3)",
+            "title": "Arrival & Soft Landing",
+            "desc": "Land HKT at 07:15 AM. Smooth 75m private van to Khao Lak. Settle in, shallow pool dip, AC afternoon nap."
+          },
+          {
+            "day": "Day 2\u20134 (Feb 4\u20136)",
+            "title": "Resort Beach & Lagoon Life",
+            "desc": "Mornings at the beach; afternoons in the indoor AC kids club when sun is strongest. Sunset strolls."
+          },
+          {
+            "day": "Day 5 (Sun, Feb 7)",
+            "title": "Turtle Sanctuary Excursion",
+            "desc": "Feed rehabilitated sea turtles at the Royal Navy Turtle Center."
+          },
+          {
+            "day": "Day 6\u20139 (Feb 8\u201311)",
+            "title": "Pure Slow Paced Relaxation",
+            "desc": "Lagoon pool floating, beachfront massages, breezy shaded stroller naps."
+          }
+        ]
+      },
+      {
+        "id": "opt2-b2",
+        "name": "Base 2: Kata Noi Beach, South Phuket (7 Nights)",
+        "dates": "Feb 12 \u2013 Feb 19, 2027",
+        "location": "Kata Noi Beach, South Phuket",
+        "lat": 7.805,
+        "lng": 98.299,
+        "transfer": "1h 45m scenic highway van drive south through Phuket",
+        "vibe": "First-line beach resort, sheltered turquoise cove, toddler splash pools.",
+        "stayRec": "Katathani Phuket Beach Resort (from Eden's guide)",
+        "overview": "Kata Noi is tucked away behind green headlands with no through-traffic. Katathani sits directly on the white sand with 6 pools, dedicated toddler splash zones, oceanfront lawns, and peaceful walking.",
+        "days": [
+          {
+            "day": "Day 10 (Fri, Feb 12)",
+            "title": "Transfer to South Phuket",
+            "desc": "Scenic VIP van drive south to Kata Noi (1h 45m). Check into Katathani beachfront resort."
+          },
+          {
+            "day": "Day 11\u201313 (Feb 13\u201315)",
+            "title": "Kata Noi Bay & Splash Play",
+            "desc": "White sand, gentle waves, and Katathani's dedicated mini water playground for Tom."
+          },
+          {
+            "day": "Day 14\u201316 (Feb 16\u201318)",
+            "title": "Nai Harn Stroll & Rawai Dining",
+            "desc": "Stroll shaded Nai Harn lake promenade; seafood dinner overlooking Rawai longtail boats."
+          }
+        ]
+      },
+      {
+        "id": "opt2-b3",
+        "name": "Base 3: Bang Tao / Laguna, Phuket (5 Nights)",
+        "dates": "Feb 19 \u2013 Feb 24, 2027",
+        "location": "Bang Tao Beach & Laguna Enclave",
+        "lat": 7.9922,
+        "lng": 98.2934,
+        "transfer": "45 min drive north to Laguna (25 min from airport)",
+        "vibe": "Paved flat stroller paths, Boat Avenue dining, stress-free departure base.",
+        "stayRec": "SAii Laguna Phuket",
+        "overview": "Finish the holiday in Phuket's premier gated resort enclave with wide flat sidewalks, free shuttle boats across the internal lagoons, organic baby markets, and top restaurants \u2014 only 25 minutes from the airport.",
+        "days": [
+          {
+            "day": "Day 17 (Fri, Feb 19)",
+            "title": "Settle into Laguna Enclave",
+            "desc": "Transfer north to SAii Laguna. Ride the free open-air canal boat with Tom."
+          },
+          {
+            "day": "Day 18\u201320 (Feb 20\u201322)",
+            "title": "Boat Avenue Dining & Pools",
+            "desc": "Flat stroller walks, bakery treats, pool waterslide, and shaded beach clubs."
+          },
+          {
+            "day": "Day 21\u201322 (Feb 23\u201324)",
+            "title": "Final Sunset & Airport Hop",
+            "desc": "Final day at beach, pack comfortably, and quick 25m transfer to HKT for EK 391."
+          }
+        ]
+      }
+    ]
+  },
+  "3": {
+    "id": 3,
+    "name": "Option 3: The 4-Base Grand Explorer",
+    "tag": "Grand Explorer (4 Bases)",
+    "summary": "For families who want maximum geographic variety: Bang Tao (5n) -> Khao Lak (7n) -> Krabi Coast (5n) -> Kata Noi / South Phuket (4n). All transfers handled by door-to-door VIP vans.",
+    "bases": [
+      {
+        "id": "opt3-b1",
+        "name": "Base 1: Bang Tao / Laguna (5 Nights)",
+        "dates": "Feb 3 \u2013 Feb 8, 2027",
+        "location": "Bang Tao Beach",
+        "lat": 7.9922,
+        "lng": 98.2934,
+        "transfer": "25 min smooth van from HKT Airport",
+        "vibe": "Soft landing, modern conveniences, calm resort pools.",
+        "stayRec": "SAii Laguna Phuket",
+        "overview": "Immediate rest after the flight. Gentle introduction with supermarkets, pharmacies, and flat stroller paths.",
+        "days": [
+          {
+            "day": "Day 1\u20133 (Feb 3\u20135)",
+            "title": "Arrival & Soft Landing",
+            "desc": "Land HKT 07:15 AM, 25 min to hotel. Recover, swim, enjoy lagoon boats."
+          },
+          {
+            "day": "Day 4\u20135 (Feb 6\u20137)",
+            "title": "Boat Avenue & Beach Days",
+            "desc": "Explore local cafes, toddler splash pools, and shaded beach walks."
+          }
+        ]
+      },
+      {
+        "id": "opt3-b2",
+        "name": "Base 2: Khao Lak (7 Nights)",
+        "dates": "Feb 8 \u2013 Feb 15, 2027",
+        "location": "Khuk Khak Beach, Khao Lak",
+        "lat": 8.683,
+        "lng": 98.2405,
+        "transfer": "80 min highway drive north across Sarasin Bridge",
+        "vibe": "Shallowest safest waters in Thailand, 2.4km lagoon pool, AC kids club.",
+        "stayRec": "JW Marriott Khao Lak Resort & Spa",
+        "overview": "Deep relaxation in Khao Lak. Ultra-safe knee-deep water for Tom, indoor kids club, and endless stroller paths.",
+        "days": [
+          {
+            "day": "Day 6\u20138 (Feb 8\u201310)",
+            "title": "Lagoon Life & Aqua Play",
+            "desc": "Check into JW Marriott. Interactive fountains, wave pool, and beach."
+          },
+          {
+            "day": "Day 9\u201312 (Feb 11\u201314)",
+            "title": "Turtle Center & Spa Sunsets",
+            "desc": "Visit sea turtle sanctuary, massage pavilions, and sunset strolls."
+          }
+        ]
+      },
+      {
+        "id": "opt3-b3",
+        "name": "Base 3: Krabi Coast - Klong Muang (5 Nights)",
+        "dates": "Feb 15 \u2013 Feb 20, 2027",
+        "location": "Klong Muang / Tubkaek, Krabi",
+        "lat": 8.055,
+        "lng": 98.762,
+        "transfer": "2h 15m scenic highway van drive southeast",
+        "vibe": "Dramatic limestone karsts, quiet mainland luxury, massive pools.",
+        "stayRec": "Sofitel Krabi Phokeethra / Phulay Bay",
+        "overview": "Admire the world-famous limestone karst towers directly from your beach lounger on mainland Krabi without boat travel.",
+        "days": [
+          {
+            "day": "Day 13\u201315 (Feb 15\u201317)",
+            "title": "Krabi Cliff Scenery",
+            "desc": "Scenic highway drive to Krabi. Enjoy massive pool and ocean views."
+          },
+          {
+            "day": "Day 16\u201317 (Feb 18\u201319)",
+            "title": "Tubkaek Beach & Sunsets",
+            "desc": "Quiet tidal beach walks and gourmet beachfront Thai dinners."
+          }
+        ]
+      },
+      {
+        "id": "opt3-b4",
+        "name": "Base 4: Kata Noi Beach, South Phuket (4 Nights)",
+        "dates": "Feb 20 \u2013 Feb 24, 2027",
+        "location": "Kata Noi Beach, South Phuket",
+        "lat": 7.805,
+        "lng": 98.299,
+        "transfer": "2h 30m highway drive back to South Phuket",
+        "vibe": "Sheltered cove, Katathani resort, fine white sand, toddler pools.",
+        "stayRec": "Katathani Phuket Beach Resort (from Eden's guide)",
+        "overview": "Final 4 nights on one of Phuket's most sheltered bays. Splashing in Katathani's kids splash park before departing home.",
+        "days": [
+          {
+            "day": "Day 18\u201319 (Feb 20\u201321)",
+            "title": "Kata Noi Bay Splashing",
+            "desc": "Settle into Katathani. Soft white sand, gentle waves, oceanfront lawns."
+          },
+          {
+            "day": "Day 20\u201321 (Feb 22\u201323)",
+            "title": "Viewpoints & Farewell Dinner",
+            "desc": "Visit Windmill viewpoint, pack luggage, and enjoy final sunset."
+          },
+          {
+            "day": "Day 22 (Wed, Feb 24)",
+            "title": "Airport Transfer to HKT",
+            "desc": "Highway drive to HKT Airport (55 min) for 09:20 AM Emirates departure (EK 391)."
+          }
+        ]
+      }
+    ]
+  }
+};
 
-    // Saved Google Places Data
     const savedPlaces = [
       {
         name: "⭐ Rayavadee Resort (Saved Place)",
@@ -642,25 +800,104 @@
 
     // Route legs mapping for each 3-base option
     const optionLegs = {
-      1: [
-        { name: "Drive 1: HKT Airport &rarr; Khao Lak", key: "hkt_to_khaolak", time: "75 min (68 km)", from: "HKT Airport", to: "Khao Lak (JW Marriott)" },
-        { name: "Drive 2: Khao Lak &rarr; Kata Noi", key: "khaolak_to_katanoi", time: "1h 45m (98 km)", from: "Khao Lak", to: "Kata Noi (Katathani)" },
-        { name: "Drive 3: Kata Noi &rarr; Bang Tao / Laguna", key: "katanoi_to_bangtao", time: "45 min (28 km)", from: "Kata Noi", to: "Bang Tao (SAii Laguna)" },
-        { name: "Drive 4: Bang Tao &rarr; HKT Airport", key: "bangtao_to_hkt", time: "25 min (18 km)", from: "Bang Tao", to: "HKT Airport" }
-      ],
-      2: [
-        { name: "Drive 1: HKT Airport &rarr; Khao Lak", key: "hkt_to_khaolak", time: "75 min (68 km)", from: "HKT Airport", to: "Khao Lak" },
-        { name: "Drive 2: Khao Lak &rarr; Tri Trang / Merlin Beach", key: "khaolak_to_tritrang", time: "1h 35m (90 km)", from: "Khao Lak", to: "Phuket Marriott Merlin" },
-        { name: "Drive 3: Tri Trang &rarr; Bang Tao / Laguna", key: "tritrang_to_bangtao", time: "35 min (22 km)", from: "Merlin Beach", to: "Bang Tao" },
-        { name: "Drive 4: Bang Tao &rarr; HKT Airport", key: "bangtao_to_hkt", time: "25 min (18 km)", from: "Bang Tao", to: "HKT Airport" }
-      ],
-      3: [
-        { name: "Drive 1: HKT Airport &rarr; Bang Tao / Laguna", key: "hkt_to_bangtao", time: "25 min (18 km)", from: "HKT Airport", to: "Bang Tao" },
-        { name: "Drive 2: Bang Tao &rarr; Khao Lak", key: "bangtao_to_khaolak", time: "80 min (74 km)", from: "Bang Tao", to: "Khao Lak" },
-        { name: "Drive 3: Khao Lak &rarr; Karon Beach", key: "khaolak_to_karon", time: "1h 40m (94 km)", from: "Khao Lak", to: "Karon (Emerald Beach)" },
-        { name: "Drive 4: Karon &rarr; HKT Airport", key: "karon_to_bangtao", time: "55 min (46 km)", from: "Karon Beach", to: "HKT Airport" }
-      ]
-    };
+  "1": [
+    {
+      "name": "Drive 1: HKT Airport -> Bang Tao",
+      "key": "hkt_to_bangtao",
+      "time": "25 min (18 km)",
+      "from": "HKT Airport",
+      "to": "Bang Tao"
+    },
+    {
+      "name": "Drive 2: Bang Tao -> Khao Lak",
+      "key": "bangtao_to_khaolak",
+      "time": "80 min (74 km)",
+      "from": "Bang Tao",
+      "to": "Khao Lak (JW Marriott)"
+    },
+    {
+      "name": "Drive 3: Khao Lak -> Krabi Coast",
+      "key": "khaolak_to_krabi",
+      "time": "2h 15m (135 km)",
+      "from": "Khao Lak",
+      "to": "Krabi (Klong Muang)"
+    },
+    {
+      "name": "Drive 4: Krabi Coast -> HKT Airport",
+      "key": "krabi_to_hkt",
+      "time": "2h 10m (130 km)",
+      "from": "Krabi",
+      "to": "HKT Airport"
+    }
+  ],
+  "2": [
+    {
+      "name": "Drive 1: HKT Airport -> Khao Lak",
+      "key": "hkt_to_khaolak",
+      "time": "75 min (68 km)",
+      "from": "HKT Airport",
+      "to": "Khao Lak"
+    },
+    {
+      "name": "Drive 2: Khao Lak -> Kata Noi",
+      "key": "khaolak_to_katanoi",
+      "time": "1h 45m (98 km)",
+      "from": "Khao Lak",
+      "to": "Kata Noi (Katathani)"
+    },
+    {
+      "name": "Drive 3: Kata Noi -> Bang Tao / Laguna",
+      "key": "katanoi_to_bangtao",
+      "time": "45 min (28 km)",
+      "from": "Kata Noi",
+      "to": "Bang Tao (SAii Laguna)"
+    },
+    {
+      "name": "Drive 4: Bang Tao -> HKT Airport",
+      "key": "bangtao_to_hkt",
+      "time": "25 min (18 km)",
+      "from": "Bang Tao",
+      "to": "HKT Airport"
+    }
+  ],
+  "3": [
+    {
+      "name": "Drive 1: HKT Airport -> Bang Tao",
+      "key": "hkt_to_bangtao",
+      "time": "25 min (18 km)",
+      "from": "HKT Airport",
+      "to": "Bang Tao"
+    },
+    {
+      "name": "Drive 2: Bang Tao -> Khao Lak",
+      "key": "bangtao_to_khaolak",
+      "time": "80 min (74 km)",
+      "from": "Bang Tao",
+      "to": "Khao Lak"
+    },
+    {
+      "name": "Drive 3: Khao Lak -> Krabi Coast",
+      "key": "khaolak_to_krabi",
+      "time": "2h 15m (135 km)",
+      "from": "Khao Lak",
+      "to": "Krabi (Klong Muang)"
+    },
+    {
+      "name": "Drive 4: Krabi -> Kata Noi (South Phuket)",
+      "key": "krabi_to_katanoi",
+      "time": "2h 30m (155 km)",
+      "from": "Krabi",
+      "to": "Kata Noi"
+    },
+    {
+      "name": "Drive 5: Kata Noi -> HKT Airport",
+      "key": "katanoi_to_hkt",
+      "time": "55 min (46 km)",
+      "from": "Kata Noi",
+      "to": "HKT Airport"
+    }
+  ]
+};
 
     function renderSavedPlaces() {
       savedLayer.clearLayers();
