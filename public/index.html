@@ -649,16 +649,17 @@
     function createMarkerIcon(color, border = '#ffffff') {
       return L.divIcon({
         className: 'custom-pin',
-        html: `<div style="background-color: ${color}; width: 26px; height: 26px; border-radius: 50%; border: 3px solid ${border}; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; color: white; font-size: 11px; font-weight: bold;">
+        html: `<div style="background-color: ${color}; width: 28px; height: 28px; border-radius: 50%; border: 3px solid ${border}; box-shadow: 0 4px 12px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: bold;">
                  <i class="fa-solid fa-location-dot"></i>
                </div>`,
-        iconSize: [26, 26],
-        iconAnchor: [13, 13]
+        iconSize: [28, 28],
+        iconAnchor: [14, 14]
       });
     }
 
     const icons = {
       base: createMarkerIcon('#0d9488', '#ffffff'),
+      activeBase: createMarkerIcon('#0f766e', '#34d399'),
       airport: createMarkerIcon('#2563eb', '#ffffff'),
       saved: createMarkerIcon('#f59e0b', '#78350f')
     };
@@ -667,8 +668,30 @@
     let activeBaseIndex = 0;
     let markersLayer = L.layerGroup().addTo(map);
     let routesLayer = L.layerGroup().addTo(map);
+    let activeDriveLayer = L.layerGroup().addTo(map);
     let savedLayer = L.layerGroup().addTo(map);
     let showSaved = true;
+
+    // Route definition mapping to REAL_ROUTES keys
+    const optionLegs = {
+      1: [
+        { name: "Drive 1: HKT Airport &rarr; Khao Lak", key: "hkt_to_khaolak", time: "75 min (68 km)", from: "HKT Airport", to: "Khao Lak (JW Marriott)" },
+        { name: "Drive 2: Khao Lak &rarr; Bang Tao / Laguna", key: "khaolak_to_bangtao", time: "80 min (74 km)", from: "Khao Lak", to: "Bang Tao Beach" },
+        { name: "Drive 3: Bang Tao &rarr; HKT Airport", key: "bangtao_to_hkt", time: "25 min (18 km)", from: "Bang Tao", to: "HKT Airport" }
+      ],
+      2: [
+        { name: "Drive 1: HKT Airport &rarr; Bang Tao", key: "hkt_to_bangtao", time: "25 min (18 km)", from: "HKT Airport", to: "Bang Tao" },
+        { name: "Drive 2: Bang Tao &rarr; Khao Lak", key: "khaolak_to_bangtao", reverse: true, time: "80 min (74 km)", from: "Bang Tao", to: "Khao Lak" },
+        { name: "Drive 3: Khao Lak &rarr; Krabi Coast", key: "khaolak_to_krabi", time: "2h 15m (135 km)", from: "Khao Lak", to: "Krabi (Klong Muang)" },
+        { name: "Drive 4: Krabi Coast &rarr; HKT Airport", key: "krabi_to_hkt", time: "2h 10m (130 km)", from: "Krabi", to: "HKT Airport" }
+      ],
+      3: [
+        { name: "Drive 1: HKT Airport &rarr; Khao Lak", key: "hkt_to_khaolak", time: "75 min (68 km)", from: "HKT Airport", to: "Khao Lak" },
+        { name: "Drive 2: Khao Lak &rarr; Kata Noi", key: "khaolak_to_katanoi", time: "1h 45m (98 km)", from: "Khao Lak", to: "Kata Noi Beach" },
+        { name: "Drive 3: Kata Noi &rarr; Bang Tao", key: "katanoi_to_bangtao", time: "45 min (28 km)", from: "Kata Noi", to: "Bang Tao / Laguna" },
+        { name: "Drive 4: Bang Tao &rarr; HKT Airport", key: "bangtao_to_hkt", time: "25 min (18 km)", from: "Bang Tao", to: "HKT Airport" }
+      ]
+    };
 
     // Render Saved Places
     function renderSavedPlaces() {
@@ -701,15 +724,16 @@
       renderSavedPlaces();
     }
 
-    // Update Map for Selected Option
+    // Draw Google-Maps-Style Real Road Network
     function updateMapForOption(optId) {
       markersLayer.clearLayers();
       routesLayer.clearLayers();
+      activeDriveLayer.clearLayers();
 
       const opt = itineraries[optId];
       const points = [];
 
-      // Add Airport Marker
+      // Airport Marker
       const aptMarker = L.marker([hktAirport.lat, hktAirport.lng], { icon: icons.airport }).addTo(markersLayer);
       aptMarker.bindPopup(`
         <div class="p-1 space-y-1">
@@ -720,7 +744,7 @@
       `);
       points.push([hktAirport.lat, hktAirport.lng]);
 
-      // Add Base Markers
+      // Base Markers
       opt.bases.forEach((b, idx) => {
         const marker = L.marker([b.lat, b.lng], { icon: icons.base }).addTo(markersLayer);
         marker.bindPopup(`
@@ -729,31 +753,83 @@
             <h4 class="font-bold text-sm text-slate-900">${b.name}</h4>
             <p class="text-xs text-teal-700 font-medium">${b.dates}</p>
             <p class="text-xs text-slate-600">${b.vibe}</p>
-            <div class="pt-1">
-              <button onclick="selectBaseTab(${idx})" class="text-xs text-teal-800 font-bold underline">View Itinerary & Days &rarr;</button>
+            <div class="pt-1 flex gap-2">
+              <button onclick="selectBaseTab(${idx})" class="text-xs text-teal-800 font-bold underline">Focus Drive & Details &rarr;</button>
             </div>
           </div>
         `);
         points.push([b.lat, b.lng]);
       });
 
-      // Add route lines (Road network)
-      if (opt.bases.length >= 2) {
-        const routeCoords = [ [hktAirport.lat, hktAirport.lng] ];
-        opt.bases.forEach(b => routeCoords.push([b.lat, b.lng]));
-        routeCoords.push([hktAirport.lat, hktAirport.lng]); // return loop
+      // Draw real road polylines from REAL_ROUTES
+      const legs = optionLegs[optId] || [];
+      legs.forEach(leg => {
+        let pts = REAL_ROUTES[leg.key];
+        if (pts && pts.length > 0) {
+          if (leg.reverse) {
+            pts = [...pts].reverse();
+          }
 
-        L.polyline(routeCoords, {
-          color: '#0d9488',
-          weight: 4,
-          opacity: 0.8,
-          dashArray: '6, 8'
-        }).addTo(routesLayer);
-      }
+          // Outer shadow casing (Google Maps style)
+          L.polyline(pts, {
+            color: '#1e3a8a',
+            weight: 7,
+            opacity: 0.35,
+            lineCap: 'round',
+            lineJoin: 'round'
+          }).addTo(routesLayer);
 
-      // Fit map bounds
+          // Inner vibrant navigation line (Google Maps Blue)
+          const roadLine = L.polyline(pts, {
+            color: '#3b82f6',
+            weight: 5,
+            opacity: 0.85,
+            lineCap: 'round',
+            lineJoin: 'round'
+          }).addTo(routesLayer);
+
+          // Bind route info tooltip on hover
+          roadLine.bindTooltip(`<strong>${leg.name}</strong><br><span style="font-size:11px;">⏱️ ${leg.time}</span>`, {
+            sticky: true,
+            className: 'bg-slate-900 text-white p-2 rounded-lg text-xs shadow-lg'
+          });
+        }
+      });
+
       if (points.length > 0) {
         map.fitBounds(L.latLngBounds(points), { padding: [50, 50], maxZoom: 10 });
+      }
+    }
+
+    // Highlight Specific Drive to Active Base
+    function highlightDriveForBase(optId, baseIdx) {
+      activeDriveLayer.clearLayers();
+      const legs = optionLegs[optId] || [];
+      const leg = legs[baseIdx]; // leg arriving to this base
+
+      if (leg && REAL_ROUTES[leg.key]) {
+        let pts = REAL_ROUTES[leg.key];
+        if (leg.reverse) pts = [...pts].reverse();
+
+        // Highlight with bright Google Maps Cyan/Green glow
+        L.polyline(pts, {
+          color: '#0284c7',
+          weight: 9,
+          opacity: 0.9,
+          lineCap: 'round',
+          lineJoin: 'round'
+        }).addTo(activeDriveLayer);
+
+        L.polyline(pts, {
+          color: '#38bdf8',
+          weight: 5,
+          opacity: 1.0,
+          lineCap: 'round',
+          lineJoin: 'round'
+        }).addTo(activeDriveLayer);
+
+        // Fit bounds of this specific drive
+        map.fitBounds(L.latLngBounds(pts), { padding: [40, 40], maxZoom: 12 });
       }
     }
 
@@ -773,7 +849,7 @@
       });
 
       // Update Map Subtitle
-      document.getElementById('map-subtitle').innerHTML = `Showing active bases and transfers for <strong>${itineraries[optId].name}</strong> (100% Road Transfers)`;
+      document.getElementById('map-subtitle').innerHTML = `Showing actual road drives & bases for <strong>${itineraries[optId].name}</strong>`;
 
       // Update Labels
       document.getElementById('active-option-label').innerText = itineraries[optId].name;
@@ -783,6 +859,7 @@
       updateMapForOption(optId);
       renderBaseTabs();
       renderBaseDetail();
+      highlightDriveForBase(optId, 0);
     }
 
     // Render Base Navigation Tabs
@@ -801,7 +878,7 @@
           ? "px-4 py-2 rounded-xl text-xs font-bold bg-teal-600 text-white shadow-sm transition flex items-center gap-1.5"
           : "px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1.5";
 
-        btn.innerHTML = `<span>${b.name.split(':')[0]}</span><span class="opacity-80 text-[10px] hidden sm:inline">(${b.dates.split('–')[0].trim()})</span>`;
+        btn.innerHTML = `<i class="fa-solid fa-car text-[10px]"></i> <span>${b.name.split(':')[0]}</span><span class="opacity-80 text-[10px] hidden sm:inline">(${b.dates.split('–')[0].trim()})</span>`;
         container.appendChild(btn);
       });
     }
@@ -810,16 +887,15 @@
       activeBaseIndex = idx;
       renderBaseTabs();
       renderBaseDetail();
-
-      // Pan to base
-      const b = itineraries[activeOption].bases[idx];
-      map.flyTo([b.lat, b.lng], 11, { duration: 1.2 });
+      highlightDriveForBase(activeOption, idx);
     }
 
     // Render Detailed Content for Active Base
     function renderBaseDetail() {
       const b = itineraries[activeOption].bases[activeBaseIndex];
       const container = document.getElementById('base-detail-content');
+      const legs = optionLegs[activeOption] || [];
+      const currentLeg = legs[activeBaseIndex];
 
       let daysHtml = '';
       b.days.forEach(d => {
@@ -834,27 +910,49 @@
         `;
       });
 
+      const driveBadge = currentLeg ? `
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 text-xs flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-route"></i></span>
+            <div>
+              <div class="font-bold text-blue-950">${currentLeg.name}</div>
+              <div class="text-[11px] text-blue-700">⏱️ ${currentLeg.time} • Paved highway & bridge corridor</div>
+            </div>
+          </div>
+          <button onclick="highlightDriveForBase(${activeOption}, ${activeBaseIndex})" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg text-xs transition shrink-0 shadow-xs">
+            <i class="fa-solid fa-eye mr-1"></i> Focus Drive Route
+          </button>
+        </div>
+      ` : '';
+
       container.innerHTML = `
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
           <!-- LEFT 2 COLS: OVERVIEW & DAYS -->
           <div class="lg:col-span-2 space-y-5">
+            ${driveBadge}
+
             <div class="bg-gradient-to-r from-teal-50/70 to-slate-50 p-5 rounded-2xl border border-teal-100 space-y-3">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <span class="badge bg-teal-600 text-white text-[10px]">${b.dates}</span>
                   <h3 class="text-xl font-bold text-slate-900 mt-1">${b.name}</h3>
                 </div>
-                <button onclick="focusOnCoord(${b.lat}, ${b.lng}, 12, '${b.name}')" class="px-3 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs shadow-sm flex items-center gap-1">
-                  <i class="fa-solid fa-crosshairs"></i> Center on Map
-                </button>
+                <div class="flex gap-2">
+                  <button onclick="highlightDriveForBase(${activeOption}, ${activeBaseIndex})" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs shadow-sm flex items-center gap-1">
+                    <i class="fa-solid fa-car"></i> View Drive
+                  </button>
+                  <button onclick="focusOnCoord(${b.lat}, ${b.lng}, 13, '${b.name}')" class="px-3 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs shadow-sm flex items-center gap-1">
+                    <i class="fa-solid fa-crosshairs"></i> Center Resort
+                  </button>
+                </div>
               </div>
 
               <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">${b.overview}</p>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
                 <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
-                  <span class="text-slate-400 font-bold uppercase text-[10px] block">Transfer Logistics</span>
+                  <span class="text-slate-400 font-bold uppercase text-[10px] block">Transfer Details</span>
                   <span class="font-semibold text-slate-800 flex items-center gap-1.5 mt-0.5">
                     <i class="fa-solid fa-van-shuttle text-teal-600"></i> ${b.transfer}
                   </span>
@@ -882,20 +980,20 @@
           <!-- RIGHT COL: TIPS & GOOGLE MAPS SHORTCUTS -->
           <div class="space-y-4">
             <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
-              <h4 class="text-xs font-bold uppercase text-slate-500 tracking-wider">Toddler & Baby Focus</h4>
+              <h4 class="text-xs font-bold uppercase text-slate-500 tracking-wider">Toddler & Baby Road Comfort</h4>
               
               <div class="space-y-2 text-xs text-slate-700">
                 <div class="flex items-start gap-2">
-                  <i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i>
-                  <span><strong>Zero Speedboats:</strong> 100% road transfers via high-standard roads with car seats.</span>
+                  <i class="fa-solid fa-road text-blue-600 mt-0.5"></i>
+                  <span><strong>Smooth 4-Lane Highways:</strong> The routes use Route 4 and Highway 402 across Sarasin Bridge — wide, modern, paved roads with no mountain hairpin switchbacks.</span>
                 </div>
                 <div class="flex items-start gap-2">
-                  <i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i>
-                  <span><strong>AC Cooldown:</strong> 12:00 to 15:00 midday heat spent in AC kids club or spacious suite.</span>
+                  <i class="fa-solid fa-car-side text-blue-600 mt-0.5"></i>
+                  <span><strong>Rear & Forward Car Seats:</strong> Fitted before pickup in VIP high-roof vans so both kids can nap easily during transfers.</span>
                 </div>
                 <div class="flex items-start gap-2">
-                  <i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i>
-                  <span><strong>Stroller Friendly:</strong> Resort grounds and local beach promenades chosen for easy wheeling.</span>
+                  <i class="fa-solid fa-shield-halved text-teal-600 mt-0.5"></i>
+                  <span><strong>Zero Pier Luggage Drag:</strong> Door-to-door resort pickup straight to the next resort lobby.</span>
                 </div>
               </div>
             </div>
@@ -946,6 +1044,7 @@
     // Initialize View
     renderSavedPlaces();
     selectOption(1);
+
   </script>
 </body>
 </html>
