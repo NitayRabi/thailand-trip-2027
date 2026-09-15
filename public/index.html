@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thailand Feb 2027 – Family Trip Planning</title>
+  <title>Thailand Feb 2027 – Family Vacation Hub</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Leaflet CSS & JS -->
@@ -19,12 +19,13 @@
             brand: {
               50: '#f0fdfa',
               100: '#ccfbf1',
-              500: '#14b8a6',
-              600: '#0d9488',
-              700: '#0f766e',
+              500: '#0d9488',
+              600: '#0f766e',
+              700: '#115e59',
               900: '#134e4a',
             },
             coral: {
+              50: '#fff7ed',
               500: '#f97316',
               600: '#ea580c',
             }
@@ -35,785 +36,406 @@
   </script>
   <style>
     #map {
-      height: 560px;
+      height: 480px;
       width: 100%;
-      border-radius: 1rem;
+      border-radius: 1.25rem;
       z-index: 1;
     }
     .leaflet-popup-content-wrapper {
-      border-radius: 0.75rem;
+      border-radius: 0.85rem;
       padding: 0.25rem;
-      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.15);
     }
-    .custom-badge {
+    .badge {
       display: inline-flex;
       align-items: center;
-      padding: 0.25rem 0.75rem;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
       border-radius: 9999px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-teal-100 selection:text-teal-900">
 
-  <!-- TOP HEADER -->
-  <header class="bg-gradient-to-r from-teal-800 via-emerald-800 to-teal-900 text-white shadow-lg sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+  <!-- TOP NAV / HEADER -->
+  <header class="bg-gradient-to-r from-teal-900 via-slate-900 to-teal-950 text-white shadow-lg sticky top-0 z-50 border-b border-teal-800/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row items-center justify-between gap-3">
       <div class="flex items-center gap-3">
-        <div class="bg-teal-500/20 p-3 rounded-2xl border border-teal-400/30 text-teal-300 text-2xl">
-          <i class="fa-solid fa-plane-departure"></i>
+        <div class="w-10 h-10 rounded-xl bg-teal-500/20 border border-teal-400/30 flex items-center justify-center text-teal-300 text-xl shadow-inner">
+          <i class="fa-solid fa-umbrella-beach"></i>
         </div>
         <div>
-          <h1 class="text-xl sm:text-2xl font-bold tracking-tight">Thailand Feb 2027 Family Trip</h1>
-          <p class="text-xs sm:text-sm text-teal-200">Custom Recommendations & Interactive Map for Nitay, Adi, Tom (3y) & Lenny (6m)</p>
+          <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white flex items-center gap-2">
+            Thailand Feb 2027 <span class="text-xs px-2 py-0.5 rounded bg-teal-500/20 text-teal-300 border border-teal-500/30">West Coast Edition</span>
+          </h1>
+          <p class="text-xs text-slate-300">Nitay, Adi, Tom (3y) & Lenny (6m) • 22 Days (Feb 2 – Feb 24, 2027)</p>
         </div>
       </div>
+      
+      <!-- HEADER QUICK ACTIONS -->
       <div class="flex flex-wrap items-center gap-2 text-xs">
-        <a href="https://maps.app.goo.gl/sa1MrFq7r9cCv3rQ7" target="_blank" class="bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-200 px-3 py-1.5 rounded-full font-semibold transition flex items-center gap-1.5">
-          <i class="fa-solid fa-star text-amber-400"></i> Open Adi & Nitay's Saved Map
+        <a href="#confirmed-flights" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5">
+          <i class="fa-solid fa-ticket text-teal-400"></i> Confirmed Flights (CI5283)
         </a>
-        <span class="bg-teal-900/80 border border-teal-500/40 px-3 py-1.5 rounded-full text-teal-200">
-          <i class="fa-regular fa-calendar-check mr-1 text-teal-400"></i> Feb 2 – Feb 24/25, 2027
-        </span>
+        <a href="https://maps.app.goo.gl/sa1MrFq7r9cCv3rQ7" target="_blank" class="bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-200 px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5">
+          <i class="fa-solid fa-star text-amber-400"></i> Saved Google Places
+        </a>
       </div>
     </div>
   </header>
 
   <!-- MAIN CONTAINER -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-8">
 
-    <!-- HERO TRIP STATS & OVERVIEW -->
-    <section class="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-        <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl font-bold">
-          <i class="fa-solid fa-calendar-days"></i>
-        </div>
+    <!-- FLIGHT BANNER (CONFIRMED & DOWNLOADABLE) -->
+    <section id="confirmed-flights" class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 space-y-4">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-4">
         <div>
-          <div class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Duration</div>
-          <div class="text-lg font-bold text-slate-900">~22 Days</div>
-          <div class="text-xs text-slate-500">Feb 2 – Feb 25, 2027</div>
+          <div class="flex items-center gap-2">
+            <span class="badge bg-emerald-100 text-emerald-800 border border-emerald-200">
+              <i class="fa-solid fa-circle-check text-emerald-600"></i> Flights Booked & Confirmed
+            </span>
+            <span class="text-xs text-slate-500 font-mono">Ref: CI5283</span>
+          </div>
+          <h2 class="text-lg font-bold text-slate-900 mt-1">Emirates via Dubai Direct to Phuket (HKT)</h2>
+          <p class="text-xs text-slate-600">Straight to the Andaman Coast — no Bangkok connection, no city traffic.</p>
+        </div>
+
+        <!-- TICKET DOWNLOAD BUTTONS -->
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+          <span class="text-slate-400 font-medium mr-1 text-[11px]"><i class="fa-solid fa-download mr-1"></i> E-Tickets:</span>
+          <a href="tickets/Nitay-EmiratesTicket.pdf" target="_blank" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium transition flex items-center gap-1">
+            <i class="fa-solid fa-file-pdf text-red-500"></i> Nitay (17A/19H)
+          </a>
+          <a href="tickets/Adi-EmiratesTicket.pdf" target="_blank" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium transition flex items-center gap-1">
+            <i class="fa-solid fa-file-pdf text-red-500"></i> Adi (17B/19J)
+          </a>
+          <a href="tickets/Tom-EmiratesTicket.pdf" target="_blank" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium transition flex items-center gap-1">
+            <i class="fa-solid fa-file-pdf text-red-500"></i> Tom (17C/19K)
+          </a>
+          <a href="tickets/Lenny-EmiratesTicket.pdf" target="_blank" class="px-2.5 py-1.5 rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-900 border border-teal-200 font-medium transition flex items-center gap-1">
+            <i class="fa-solid fa-baby text-teal-600"></i> Lenny (Infant)
+          </a>
+          <a href="tickets/Emirates-FareConditions.pdf" target="_blank" class="px-2 py-1.5 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition" title="Fare Conditions">
+            <i class="fa-solid fa-circle-info"></i> Rules
+          </a>
         </div>
       </div>
 
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-        <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center text-xl font-bold">
-          <i class="fa-solid fa-baby-carriage"></i>
+      <!-- FLIGHT TIMINGS GRID -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+        <!-- OUTBOUND -->
+        <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-200 flex items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-slate-900"><i class="fa-solid fa-plane-departure text-teal-600 mr-1"></i> Outbound: Tue, Feb 2</span>
+              <span class="badge bg-teal-100 text-teal-800 py-0.5 px-2 text-[10px]">EK 146 &rarr; EK 390</span>
+            </div>
+            <div class="text-slate-600">
+              AMS 10:35 &rarr; DXB 20:20 <span class="text-slate-400 font-mono">(1h 50m transit)</span> &rarr; HKT 07:15 <span class="text-teal-700 font-semibold">(Arrives Wed, Feb 3)</span>
+            </div>
+          </div>
+          <div class="text-right hidden sm:block">
+            <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Arrival Base</span>
+            <div class="text-xs font-bold text-teal-800">Phuket Airport</div>
+          </div>
         </div>
-        <div>
-          <div class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Travelers</div>
-          <div class="text-lg font-bold text-slate-900">Nitay, Adi, Tom, Lenny</div>
-          <div class="text-xs text-slate-500">Tom (3y) & Lenny (6m baby)</div>
-        </div>
-      </div>
 
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl font-bold">
-          <i class="fa-solid fa-hotel"></i>
-        </div>
-        <div>
-          <div class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Top Resort Choice</div>
-          <div class="text-lg font-bold text-slate-900">JW Marriott Khao Lak</div>
-          <a href="#khao-lak-resorts" class="text-xs text-blue-600 hover:underline">View Priority Rankings ↓</a>
-        </div>
-      </div>
-
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold">
-          <i class="fa-solid fa-map-location-dot"></i>
-        </div>
-        <div>
-          <div class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Google Maps Sync</div>
-          <div class="text-lg font-bold text-slate-900">Live List Synced</div>
-          <a href="https://maps.app.goo.gl/sa1MrFq7r9cCv3rQ7" target="_blank" class="text-xs text-amber-600 hover:underline">View Google List <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
+        <!-- INBOUND -->
+        <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-200 flex items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-slate-900"><i class="fa-solid fa-plane-arrival text-slate-600 mr-1"></i> Inbound: Wed, Feb 24</span>
+              <span class="badge bg-slate-200 text-slate-700 py-0.5 px-2 text-[10px]">EK 391 &rarr; EK 149</span>
+            </div>
+            <div class="text-slate-600">
+              HKT 09:20 &rarr; DXB 12:55 <span class="text-slate-400 font-mono">(2h 25m transit)</span> &rarr; AMS 20:00 <span class="text-slate-700 font-semibold">(Same day return)</span>
+            </div>
+          </div>
+          <div class="text-right hidden sm:block">
+            <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Departure Base</span>
+            <div class="text-xs font-bold text-slate-800">Phuket Airport</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- MAP SECTION WITH INTERACTIVE CONTROLS -->
-    <section class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-4">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <!-- ITINERARY OPTIONS SELECTOR (THE CORE PLANNER) -->
+    <section class="space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
         <div>
-          <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
-            <i class="fa-solid fa-map-location-dot text-teal-600"></i> Interactive Trip Map
-          </h2>
-          <p class="text-sm text-slate-600">Flight corridors, coastal beach regions, road transfers, <strong>JW Marriott & Khao Lak resorts</strong>, plus <strong>Adi & Nitay's saved places</strong>.</p>
+          <span class="text-xs font-bold uppercase tracking-wider text-teal-600">West Coast Route Models</span>
+          <h2 class="text-2xl font-black text-slate-900">Choose an Itinerary Strategy</h2>
+          <p class="text-sm text-slate-600">Compare 3 vetted paces designed for a toddler (3y) and infant (6m) on the Andaman coast.</p>
         </div>
+
+        <div class="text-xs text-slate-500 font-medium">
+          <i class="fa-solid fa-arrow-pointer text-teal-600 mr-1"></i> Select an option to update the map and daily bases
+        </div>
+      </div>
+
+      <!-- STRATEGY SELECTOR CARDS -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         
-        <!-- MAP VIEW FILTER BUTTONS -->
-        <div class="flex flex-wrap gap-2 text-xs">
-          <button onclick="showMapView('all')" id="btn-all" class="px-3.5 py-2 rounded-xl font-medium border border-teal-600 bg-teal-600 text-white shadow-sm transition">
-            <i class="fa-solid fa-globe mr-1"></i> Full Overview
-          </button>
-          <button onclick="showMapView('khaolak')" id="btn-khaolak" class="px-3.5 py-2 rounded-xl font-medium border border-blue-600 bg-blue-600 text-white shadow-sm transition">
-            <i class="fa-solid fa-hotel text-white mr-1"></i> 🏨 JW Marriott & Resorts
-          </button>
-          <button onclick="showMapView('saved')" id="btn-saved" class="px-3.5 py-2 rounded-xl font-medium border border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100 transition">
-            <i class="fa-solid fa-star text-amber-500 mr-1"></i> ⭐ Saved Google Places
-          </button>
-          <button onclick="showMapView('west')" id="btn-west" class="px-3.5 py-2 rounded-xl font-medium border border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
-            <i class="fa-solid fa-umbrella-beach mr-1 text-teal-600"></i> West Coast
-          </button>
-          <button onclick="showMapView('east')" id="btn-east" class="px-3.5 py-2 rounded-xl font-medium border border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
-            <i class="fa-solid fa-car mr-1 text-orange-600"></i> East Coast
-          </button>
-        </div>
-      </div>
-
-      <!-- LEAFLET MAP CONTAINER -->
-      <div id="map"></div>
-
-      <!-- MAP LEGEND -->
-      <div class="flex flex-wrap items-center justify-between text-xs text-slate-600 pt-2 border-t border-slate-100 gap-3">
-        <div class="flex flex-wrap gap-4">
-          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-blue-600 inline-block border border-white"></span> 👑 #1 JW Marriott (Top Pick)</span>
-          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-600 inline-block border border-white"></span> 🏨 Other High-End & Family Resorts</span>
-          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-400 inline-block border border-amber-600"></span> ⭐ Saved Google List</span>
-          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-blue-600 inline-block"></span> Airports & Flights</span>
-        </div>
-        <span class="text-slate-400 font-mono"><i class="fa-solid fa-hand-pointer text-slate-400 mr-1"></i> Click markers to view recommendations & Google Maps links</span>
-      </div>
-    </section>
-
-    <!-- KHAO LAK RESORT RANKINGS SECTION (RE-PRIORITIZED FOR LUXURY + KIDS BALANCE) -->
-    <section id="khao-lak-resorts" class="bg-white p-6 sm:p-8 rounded-3xl border border-blue-200 shadow-md space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-        <div>
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-900 text-xs font-semibold mb-2">
-            <i class="fa-solid fa-crown text-blue-600"></i> Prioritized for High-End 5-Star Luxury + Kid Facilities
+        <!-- OPTION 1 -->
+        <button onclick="selectOption(1)" id="opt-btn-1" class="text-left p-5 rounded-2xl border-2 border-teal-600 bg-white shadow-md transition relative group">
+          <div class="flex items-center justify-between mb-2">
+            <span class="badge bg-teal-600 text-white">Recommended</span>
+            <span class="text-xs font-bold text-teal-700 font-mono">2 Bases • 1 Move</span>
           </div>
-          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Resort Priorities (Luxury & Kids Balance)</h2>
-          <p class="text-sm text-slate-600 mt-1">Re-ranked to emphasize true 5-star elegance, air-conditioned indoor kids clubs, and peaceful grounds, balanced with shallow pools for Tom (3y) & Lenny (6m).</p>
-        </div>
-        <button onclick="showMapView('khaolak')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-xs transition shadow-sm inline-flex items-center gap-2 shrink-0">
-          <i class="fa-solid fa-map-location-dot"></i> Focus #1 JW Marriott on Map
+          <h3 class="text-lg font-bold text-slate-900 group-hover:text-teal-700 transition">Option 1: Ultra-Relaxed</h3>
+          <p class="text-xs text-slate-600 mt-1">Khao Lak (11 nights) & Bang Tao Phuket (10 nights). Zero boats, pure beach bliss, lowest logistical stress.</p>
+          <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
+            <span>JW Marriott & Laguna</span>
+            <i class="fa-solid fa-chevron-right text-teal-600"></i>
+          </div>
         </button>
-      </div>
 
-      <div class="space-y-6">
-
-        <!-- PRIORITY #1: JW MARRIOTT KHAO LAK (OUR TOP PICK) -->
-        <div class="p-6 rounded-2xl border-2 border-blue-500 bg-gradient-to-br from-blue-50/50 via-white to-slate-50 hover:shadow-xl transition space-y-4">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div class="flex items-center gap-3">
-              <span class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-xl shadow-md">1</span>
-              <div>
-                <div class="flex items-center gap-2 flex-wrap">
-                  <h3 class="text-2xl font-bold text-slate-900">JW Marriott Khao Lak Resort & Spa</h3>
-                  <a href="https://www.google.com/maps/search/?api=1&query=JW+Marriott+Khao+Lak+Resort+%26+Spa" target="_blank" class="text-blue-700 hover:text-blue-900 text-xs bg-blue-100 hover:bg-blue-200 px-2.5 py-1 rounded-md transition font-semibold flex items-center gap-1">
-                    <i class="fa-solid fa-map-pin"></i> Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                  </a>
-                </div>
-                <span class="text-xs font-semibold text-blue-800"><i class="fa-solid fa-location-dot mr-1"></i> <a href="https://www.google.com/maps/search/?api=1&query=Kuk+Kak+Beach+Khao+Lak" target="_blank" class="underline hover:text-blue-900">Kuk Kak Beach</a> • 👑 Top Pick: Perfect Balance of High-End Luxury & Family Amenities</span>
-              </div>
-            </div>
-            <span class="custom-badge bg-blue-600 text-white text-xs px-3.5 py-1.5 self-start sm:self-auto shadow-sm">
-              👑 #1 Priority: Best Luxury / Kids Balance
-            </span>
+        <!-- OPTION 2 -->
+        <button onclick="selectOption(2)" id="opt-btn-2" class="text-left p-5 rounded-2xl border-2 border-slate-200 bg-white hover:border-slate-300 shadow-sm transition relative group">
+          <div class="flex items-center justify-between mb-2">
+            <span class="badge bg-blue-100 text-blue-800">Balanced Variety</span>
+            <span class="text-xs font-bold text-blue-700 font-mono">3 Bases • 2 Moves</span>
           </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm text-slate-700 pt-2">
-            <div class="bg-white p-4 rounded-xl border border-blue-100 shadow-sm">
-              <div class="font-bold text-blue-900 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-snowflake text-blue-600"></i> Indoor AC Kids Club</div>
-              <span>Brand-new <em>Family by JW Club</em> featuring an expansive air-conditioned indoor jungle & coastal village with soft play, ball pits, toy rooms, and reading corners for cool afternoon breaks.</span>
-            </div>
-            <div class="bg-white p-4 rounded-xl border border-blue-100 shadow-sm">
-              <div class="font-bold text-blue-900 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-water text-blue-600"></i> 2.4km Lagoon & Aqua Play</div>
-              <span>Southeast Asia's largest winding lagoon pool encircles the resort, complete with a dedicated Aqua Play area, interactive fountains, and gentle toddler wave pools.</span>
-            </div>
-            <div class="bg-white p-4 rounded-xl border border-blue-100 shadow-sm">
-              <div class="font-bold text-blue-900 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-crown text-blue-600"></i> True 5-Star Standards</div>
-              <span>Upscale Marriott service, top-tier baby cribs & high chairs, stroller-friendly flat lagoon pathways, gourmet dining, and quiet beachfront for infant sleep.</span>
-            </div>
+          <h3 class="text-lg font-bold text-slate-900 group-hover:text-blue-700 transition">Option 2: The Andaman Trio</h3>
+          <p class="text-xs text-slate-600 mt-1">Bang Tao (6n) &rarr; Khao Lak (9n) &rarr; Krabi Coast (6n). Road-only transfers visiting Rayavadee & limestone scenery.</p>
+          <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
+            <span>Phuket + Khao Lak + Krabi</span>
+            <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-blue-600"></i>
           </div>
+        </button>
 
-          <div class="flex flex-wrap justify-between items-center text-xs pt-3 border-t border-blue-200/80 gap-2">
-            <div class="flex items-center gap-3">
-              <span class="text-slate-600 font-bold"><i class="fa-solid fa-star text-amber-500"></i> 4.7 / 5 (3,500+ Luxury Reviews)</span>
-              <a href="https://www.google.com/maps/search/?api=1&query=JW+Marriott+Khao+Lak+Resort+%26+Spa" target="_blank" class="text-blue-700 hover:underline font-bold flex items-center gap-1">
-                Open in Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-              </a>
-            </div>
-            <button onclick="focusLocation(8.6830, 98.2405, 'JW Marriott Khao Lak')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-sm">
-              <i class="fa-solid fa-crosshairs"></i> Focus #1 JW Marriott on Map
-            </button>
+        <!-- OPTION 3 -->
+        <button onclick="selectOption(3)" id="opt-btn-3" class="text-left p-5 rounded-2xl border-2 border-slate-200 bg-white hover:border-slate-300 shadow-sm transition relative group">
+          <div class="flex items-center justify-between mb-2">
+            <span class="badge bg-purple-100 text-purple-800">Island Luxury</span>
+            <span class="text-xs font-bold text-purple-700 font-mono">3 Bases • Speedboat</span>
           </div>
-        </div>
-
-        <!-- PRIORITY #2: DEVASOM KHAO LAK (ULTRA BOUTIQUE LUXURY) -->
-        <div class="p-6 rounded-2xl border border-slate-200 bg-white hover:border-amber-400 hover:shadow-md transition space-y-4">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div class="flex items-center gap-3">
-              <span class="w-9 h-9 rounded-xl bg-amber-600 text-white flex items-center justify-center font-bold text-lg shadow-sm">2</span>
-              <div>
-                <div class="flex items-center gap-2 flex-wrap">
-                  <h3 class="text-xl font-bold text-slate-900">Devasom Khao Lak Beach Resort & Villas</h3>
-                  <a href="https://www.google.com/maps/search/?api=1&query=Devasom+Khao+Lak+Beach+Resort+%26+Villas" target="_blank" class="text-amber-700 hover:text-amber-900 text-xs bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md transition font-medium flex items-center gap-1">
-                    <i class="fa-solid fa-map-pin"></i> Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                  </a>
-                </div>
-                <span class="text-xs font-semibold text-slate-500"><i class="fa-solid fa-location-dot mr-1"></i> Khuk Khak / Natural Lagoon • Boutique Heritage Luxury</span>
-              </div>
-            </div>
-            <span class="custom-badge bg-amber-100 text-amber-900 self-start sm:self-auto">
-              ✨ Best Ultra-Boutique Luxury & Aesthetics
-            </span>
+          <h3 class="text-lg font-bold text-slate-900 group-hover:text-purple-700 transition">Option 3: Coastal & Island Escape</h3>
+          <p class="text-xs text-slate-600 mt-1">Khao Lak (9n) &rarr; Koh Yao Noi (5n Luxury Hideaway) &rarr; Bang Tao (7n). Adds an idyllic secluded island experience.</p>
+          <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
+            <span>Six Senses / Santhiya Island</span>
+            <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-purple-600"></i>
           </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm text-slate-700 pt-2">
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-              <div class="font-bold text-slate-900 mb-1"><i class="fa-solid fa-gem text-amber-600 mr-1"></i> High-Design Heritage</div>
-              <span>Stunning Southeast Asian heritage architecture, private beachfront pool villas, and Michelin-recognized dining. Intimate and serene.</span>
-            </div>
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-              <div class="font-bold text-slate-900 mb-1"><i class="fa-solid fa-snowflake text-amber-600 mr-1"></i> Indoor AC Kids Club</div>
-              <span><em>Devasom Explorers Kids Club</em> offers an air-conditioned indoor play room with crafts, games, movies, and toys + shallow kids pool.</span>
-            </div>
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-              <div class="font-bold text-slate-900 mb-1"><i class="fa-solid fa-water text-amber-600 mr-1"></i> Lagoon & Sea Access</div>
-              <span>Flanked by a calm natural lagoon and quiet beach. Ideal if you want a quiet luxury hideaway instead of a huge resort.</span>
-            </div>
-          </div>
-
-          <div class="flex justify-between items-center text-xs pt-2 border-t border-slate-100">
-            <div class="flex items-center gap-3">
-              <span class="text-slate-500 font-medium">⭐ 4.9 / 5 (Michelin Featured Resort)</span>
-              <a href="https://www.google.com/maps/search/?api=1&query=Devasom+Khao+Lak+Beach+Resort+%26+Villas" target="_blank" class="text-amber-800 hover:underline font-semibold flex items-center gap-1">
-                Open in Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-              </a>
-            </div>
-            <button onclick="focusLocation(8.6880, 98.2415, 'Devasom Khao Lak')" class="text-amber-800 font-bold hover:underline">
-              <i class="fa-solid fa-crosshairs mr-1"></i> Locate #2 on Map
-            </button>
-          </div>
-        </div>
-
-        <!-- PRIORITY #3: AVANI+ KHAO LAK -->
-        <div class="p-6 rounded-2xl border border-slate-200 bg-white hover:border-teal-400 hover:shadow-md transition space-y-4">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div class="flex items-center gap-3">
-              <span class="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center font-bold text-lg shadow-sm">3</span>
-              <div>
-                <div class="flex items-center gap-2 flex-wrap">
-                  <h3 class="text-xl font-bold text-slate-900">Avani+ Khao Lak Resort</h3>
-                  <a href="https://www.google.com/maps/search/?api=1&query=Avani%2B+Khao+Lak+Resort" target="_blank" class="text-teal-600 hover:text-teal-800 text-xs bg-teal-50 border border-teal-200 px-2 py-0.5 rounded-md transition font-medium flex items-center gap-1">
-                    <i class="fa-solid fa-map-pin"></i> Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                  </a>
-                </div>
-                <span class="text-xs font-semibold text-slate-500"><i class="fa-solid fa-location-dot mr-1"></i> <a href="https://www.google.com/maps/search/?api=1&query=Bangsak+Beach+Khao+Lak" target="_blank" class="underline hover:text-teal-800">Bangsak Beach</a> • Modern Upscale Resort</span>
-              </div>
-            </div>
-            <span class="custom-badge bg-teal-100 text-teal-800 self-start sm:self-auto">
-              🌴 Modern Luxury & Splash Park
-            </span>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm text-slate-700 pt-2">
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-              <div class="font-bold text-slate-900 mb-1"><i class="fa-solid fa-snowflake text-teal-600 mr-1"></i> 2-Storey AC Kids Club</div>
-              <span><em>AvaniKids Club</em> features two floors of air-conditioned indoor soft play rooms, games, and reading zones for toddlers.</span>
-            </div>
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-              <div class="font-bold text-slate-900 mb-1"><i class="fa-solid fa-shower text-teal-600 mr-1"></i> Outdoor Splash Pad</div>
-              <span>Separate water play area with water jets and shallow wading pools right next to the quiet beachfront family suites.</span>
-            </div>
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-              <div class="font-bold text-slate-900 mb-1"><i class="fa-solid fa-person-walking-luggage text-teal-600 mr-1"></i> Flat Stroller Pathways</div>
-              <span>Very wide flat paved pathways everywhere + 24/7 buggy shuttle service for easy stroller pushing.</span>
-            </div>
-          </div>
-
-          <div class="flex justify-between items-center text-xs pt-2 border-t border-slate-100">
-            <div class="flex items-center gap-3">
-              <span class="text-slate-500 font-medium">⭐ 4.8 / 5</span>
-              <a href="https://www.google.com/maps/search/?api=1&query=Avani%2B+Khao+Lak+Resort" target="_blank" class="text-teal-700 hover:underline font-semibold flex items-center gap-1">
-                Open in Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-              </a>
-            </div>
-            <button onclick="focusLocation(8.7512, 98.2325, 'Avani+ Khao Lak Resort')" class="text-teal-700 font-bold hover:underline">
-              <i class="fa-solid fa-crosshairs mr-1"></i> Locate #3 on Map
-            </button>
-          </div>
-        </div>
-
-        <!-- PRIORITY #4 & #5: THE SANDS & X10 (FAMILY MEGA RESORTS) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          
-          <!-- PRIORITY #4: THE SANDS KHAO LAK -->
-          <div class="p-5 rounded-2xl border border-slate-200 bg-white hover:border-emerald-400 transition space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <span class="w-7 h-7 rounded-lg bg-slate-700 text-white font-bold text-sm flex items-center justify-center">4</span>
-                <h4 class="font-bold text-slate-900">The Sands Khao Lak</h4>
-                <a href="https://www.google.com/maps/search/?api=1&query=The+Sands+Khao+Lak+by+Katathani" target="_blank" class="text-slate-600 hover:text-slate-900 text-xs">
-                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                </a>
-              </div>
-              <span class="custom-badge bg-slate-100 text-slate-700">Family Mega-Resort</span>
-            </div>
-            <p class="text-xs text-slate-600">Great water park & indoor AC Sands Castle club, 5-min walk to town. Higher volume, mass-market family feel.</p>
-            <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
-              <a href="https://www.google.com/maps/search/?api=1&query=The+Sands+Khao+Lak+by+Katathani" target="_blank" class="text-slate-700 hover:underline font-semibold">Google Maps ↗</a>
-              <button onclick="focusLocation(8.6468, 98.2464, 'The Sands Khao Lak')" class="text-slate-700 font-bold hover:underline">Locate #4</button>
-            </div>
-          </div>
-
-          <!-- PRIORITY #5: X10 KHAO LAK -->
-          <div class="p-5 rounded-2xl border border-slate-200 bg-white hover:border-emerald-400 transition space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <span class="w-7 h-7 rounded-lg bg-slate-700 text-white font-bold text-sm flex items-center justify-center">5</span>
-                <h4 class="font-bold text-slate-900">X10 Khao Lak Resort</h4>
-                <a href="https://www.google.com/maps/search/?api=1&query=X10+Khao+Lak+Resort" target="_blank" class="text-slate-600 hover:text-slate-900 text-xs">
-                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                </a>
-              </div>
-              <span class="custom-badge bg-slate-100 text-slate-700">Value Family Resort</span>
-            </div>
-            <p class="text-xs text-slate-600">Next door to The Sands. 2 kids pools, splash park, family suites. Solid mid-range option.</p>
-            <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
-              <a href="https://www.google.com/maps/search/?api=1&query=X10+Khao+Lak+Resort" target="_blank" class="text-slate-700 hover:underline font-semibold">Google Maps ↗</a>
-              <button onclick="focusLocation(8.6445, 98.2458, 'X10 Khao Lak Resort')" class="text-slate-700 font-bold hover:underline">Locate #5</button>
-            </div>
-          </div>
-
-        </div>
+        </button>
 
       </div>
     </section>
 
-    <!-- SAVED GOOGLE MAP PLACES SECTION -->
-    <section class="bg-gradient-to-br from-amber-500/10 via-amber-50/50 to-orange-500/10 p-6 rounded-3xl border border-amber-200 shadow-md space-y-4">
+    <!-- INTERACTIVE MAP & BASE LOCATIONS -->
+    <section class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200 shadow-md space-y-4">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold mb-2">
-            <i class="fa-solid fa-star text-amber-600"></i> Synced Google Maps List
-          </div>
-          <h2 class="text-2xl font-bold text-slate-900">Adi & Nitay's Saved Places</h2>
-          <p class="text-sm text-slate-600">Places directly saved in your shared Google Maps list (titled <em>"Thailand"</em> by Adi Tamches).</p>
-        </div>
-        <a href="https://maps.app.goo.gl/sa1MrFq7r9cCv3rQ7" target="_blank" class="px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-semibold text-xs transition shadow-sm inline-flex items-center gap-2 shrink-0">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open List on Google Maps
-        </a>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        
-        <!-- PLACE 1: RAYAVADEE RESORT -->
-        <div class="bg-white p-5 rounded-2xl border border-amber-200 shadow-sm flex flex-col justify-between space-y-3">
-          <div class="space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="custom-badge bg-amber-100 text-amber-800">⭐ Saved Resort</span>
-              <span class="text-xs font-bold text-slate-500"><i class="fa-solid fa-star text-amber-500"></i> 4.6 (1,735+ reviews)</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <h3 class="text-lg font-bold text-slate-900">Rayavadee Resort</h3>
-              <a href="https://www.google.com/maps/search/?api=1&query=Rayavadee+Resort+Krabi" target="_blank" class="text-amber-700 hover:underline text-xs font-semibold flex items-center gap-1">
-                Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-              </a>
-            </div>
-            <p class="text-xs text-slate-600">Luxury 5-star beachfront resort in Railay / Ao Nang, Krabi. Nestled in lush coconut groves with dramatic limestone cliff views and gentle calm beaches.</p>
-          </div>
-          <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
-            <a href="https://www.google.com/maps/search/?api=1&query=Rayavadee+Resort+Krabi" target="_blank" class="text-slate-600 hover:text-amber-700">
-              <i class="fa-solid fa-location-dot text-amber-600 mr-1"></i> Ao Nang, Krabi
-            </a>
-            <button onclick="focusLocation(8.0068, 98.8378, 'Rayavadee Resort')" class="text-amber-700 hover:underline font-bold">
-              Locate on Map <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
-            </button>
-          </div>
+          <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-map-location-dot text-teal-600"></i> West Coast Interactive Map
+          </h2>
+          <p class="text-xs text-slate-500" id="map-subtitle">Showing active bases and transfers for <strong>Option 1: Ultra-Relaxed</strong></p>
         </div>
 
-        <!-- PLACE 2: COMMON GROUNDS COFFEE -->
-        <div class="bg-white p-5 rounded-2xl border border-amber-200 shadow-sm flex flex-col justify-between space-y-3">
-          <div class="space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="custom-badge bg-amber-100 text-amber-800">☕ Saved Cafe</span>
-              <span class="text-xs font-bold text-slate-500"><i class="fa-solid fa-star text-amber-500"></i> 4.8 (800+ reviews)</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <h3 class="text-lg font-bold text-slate-900">Common Grounds Coffee</h3>
-              <a href="https://www.google.com/maps/search/?api=1&query=Common+Grounds+Coffee+Koh+Phangan" target="_blank" class="text-amber-700 hover:underline text-xs font-semibold flex items-center gap-1">
-                Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-              </a>
-            </div>
-            <p class="text-xs text-slate-600">Top-rated specialty coffee shop & relaxing cafe. Known for excellent espresso, healthy breakfast, and kid-friendly laid-back garden atmosphere.</p>
-          </div>
-          <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
-            <a href="https://www.google.com/maps/search/?api=1&query=Common+Grounds+Coffee+Koh+Phangan" target="_blank" class="text-slate-600 hover:text-amber-700">
-              <i class="fa-solid fa-location-dot text-amber-600 mr-1"></i> Koh Phangan / Thailand
-            </a>
-            <button onclick="focusLocation(9.7126, 99.9832, 'Common Grounds Coffee')" class="text-amber-700 hover:underline font-bold">
-              Locate on Map <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
-            </button>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- FLIGHT RECOMMENDATIONS SECTION -->
-    <section class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-6">
-      <div>
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold mb-2">
-          <i class="fa-solid fa-plane"></i> Outbound & Return Flight Strategy
-        </div>
-        <h2 class="text-2xl font-bold text-slate-900">Flight Recommendations (AMS to Thailand)</h2>
-        <p class="text-sm text-slate-600 mt-1">For a family traveling with a 6-month-old infant (Lenny) and a toddler (Tom, 3y), having an assigned <strong>bassinet</strong> and low-friction flight experience is the #1 priority.</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-        <!-- OPTION A: DIRECT FLIGHT -->
-        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50 hover:border-blue-300 transition space-y-4">
-          <div class="flex items-center justify-between">
-            <span class="custom-badge bg-blue-100 text-blue-800">
-              <i class="fa-solid fa-bolt mr-1"></i> Option A: Direct Flights
-            </span>
-            <span class="text-xs font-semibold text-slate-500">AMS ↔ BKK (~11h 30m)</span>
-          </div>
-
-          <h3 class="text-lg font-bold text-slate-900">EVA Air / KLM (Direct)</h3>
-          
-          <ul class="text-sm text-slate-700 space-y-2.5">
-            <li class="flex items-start gap-2">
-              <i class="fa-solid fa-circle-check text-teal-600 mt-1"></i>
-              <span><strong>No Mid-Trip Transfers:</strong> Avoid waking kids up for a mid-night connection.</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <i class="fa-solid fa-circle-check text-teal-600 mt-1"></i>
-              <span><strong>EVA Air Return Recommended:</strong> Consistently top-ranked for family hospitality and generous bassinet limits (up to 14-16kg vs KLM's 10kg limit).</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <i class="fa-solid fa-circle-info text-blue-600 mt-1"></i>
-              <span><strong>Bassinet Strategy:</strong> Call the airline immediately after booking to secure bulkhead seats with bassinet support.</span>
-            </li>
-          </ul>
-
-          <div class="pt-2 border-t border-slate-200/80 flex justify-between items-center text-xs text-slate-500">
-            <a href="https://www.google.com/maps/search/?api=1&query=Suvarnabhumi+Airport+BKK" target="_blank" class="hover:underline flex items-center gap-1 text-slate-600">
-              <i class="fa-solid fa-plane-arrival text-blue-600"></i> Arrival: Bangkok BKK Airport ↗
-            </a>
-            <button onclick="focusLocation(13.6900, 100.7501, 'Bangkok Suvarnabhumi Airport (BKK)')" class="text-blue-600 hover:underline font-semibold">
-              View on Map
-            </button>
-          </div>
-        </div>
-
-        <!-- OPTION B: 1-STOP CONNECTION -->
-        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50 hover:border-blue-300 transition space-y-4">
-          <div class="flex items-center justify-between">
-            <span class="custom-badge bg-teal-100 text-teal-800">
-              <i class="fa-solid fa-couch mr-1"></i> Option B: 1-Stop (1.5-2h Connection)
-            </span>
-            <span class="text-xs font-semibold text-slate-500">AMS → DXB/DOH → BKK/HKT</span>
-          </div>
-
-          <h3 class="text-lg font-bold text-slate-900">Emirates (via Dubai) / Qatar Airways</h3>
-          
-          <ul class="text-sm text-slate-700 space-y-2.5">
-            <li class="flex items-start gap-2">
-              <i class="fa-solid fa-circle-check text-teal-600 mt-1"></i>
-              <span><strong>Break Up the Journey:</strong> 6.5 hours to Dubai, 1.5–2h connection to stretch legs, then 6 hours to Thailand.</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <i class="fa-solid fa-circle-check text-teal-600 mt-1"></i>
-              <span><strong>World-Class Family Amenities:</strong> Free baby strollers at Dubai (DXB) & Doha (DOH), infant amenity kits (diapers/baby food), quiet A380 cabins.</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <i class="fa-solid fa-circle-check text-teal-600 mt-1"></i>
-              <span><strong>Flexible Arrival:</strong> Allows flying directly into <a href="https://www.google.com/maps/search/?api=1&query=Phuket+International+Airport+HKT" target="_blank" class="underline text-blue-700">Phuket (HKT)</a> for the West Coast option without going through Bangkok first.</span>
-            </li>
-          </ul>
-
-          <div class="pt-2 border-t border-slate-200/80 flex justify-between items-center text-xs text-slate-500">
-            <a href="https://www.google.com/maps/search/?api=1&query=Dubai+International+Airport+DXB" target="_blank" class="hover:underline flex items-center gap-1 text-slate-600">
-              <i class="fa-solid fa-plane text-teal-600"></i> Hub: Dubai DXB Airport ↗
-            </a>
-            <button onclick="focusLocation(25.2532, 55.3657, 'Dubai International Airport (DXB)')" class="text-blue-600 hover:underline font-semibold">
-              View on Map
-            </button>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ITINERARY OPTIONS SECTION -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
-      <!-- WEST COAST ITINERARY -->
-      <section class="bg-white p-6 rounded-3xl border border-teal-200 shadow-md flex flex-col justify-between space-y-5">
-        <div class="space-y-4">
-          <div class="flex items-center justify-between">
-            <span class="custom-badge bg-teal-100 text-teal-800">
-              <i class="fa-solid fa-sun mr-1"></i> West Coast Plan (Recommended Beach)
-            </span>
-            <span class="text-xs font-bold text-teal-700">1 Short Flight to BKK</span>
-          </div>
-
-          <div>
-            <h3 class="text-xl font-bold text-slate-900">Phuket (Bang Tao) & Khao Lak</h3>
-            <p class="text-sm text-slate-600 mt-1">Postcard turquoise waters, white sand, extremely family-friendly infrastructure and private road transfers (no boats!).</p>
-          </div>
-
-          <div class="space-y-3">
-            <div class="p-4 rounded-xl bg-teal-50/60 border border-teal-100 flex items-start gap-3">
-              <div class="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold text-sm shrink-0">1</div>
-              <div class="text-sm">
-                <div class="font-bold text-slate-900 flex justify-between items-center">
-                  <span>Bang Tao / Laguna (Phuket)</span>
-                  <a href="https://www.google.com/maps/search/?api=1&query=Bang+Tao+Beach+Laguna+Phuket" target="_blank" class="text-xs text-teal-700 hover:underline flex items-center gap-1">
-                    Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                  </a>
-                </div>
-                <p class="text-slate-600 text-xs mt-1">25 min private van from Phuket Airport (HKT). Flat paved sidewalks (stroller friendly!), high-end family resorts, calm beach clubs with kid pools.</p>
-                <button onclick="focusLocation(7.9922, 98.2934, 'Bang Tao Beach & Laguna')" class="text-teal-700 hover:underline font-semibold text-xs mt-2 inline-block">
-                  <i class="fa-solid fa-location-dot mr-1"></i> Locate on Map
-                </button>
-              </div>
-            </div>
-
-            <div class="p-4 rounded-xl bg-teal-50/60 border border-teal-100 flex items-start gap-3">
-              <div class="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold text-sm shrink-0">2</div>
-              <div class="text-sm">
-                <div class="font-bold text-slate-900 flex justify-between items-center">
-                  <span>Khao Lak Beach Region</span>
-                  <a href="https://www.google.com/maps/search/?api=1&query=Khao+Lak+Beach+Phang-nga" target="_blank" class="text-xs text-teal-700 hover:underline flex items-center gap-1">
-                    Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                  </a>
-                </div>
-                <p class="text-slate-600 text-xs mt-1">90 min smooth private van drive north from Bang Tao. Wide beaches with shallow water for 50m+ (safe for Tom to splash around), spacious resort grounds.</p>
-                <button onclick="focusLocation(8.6830, 98.2405, 'JW Marriott Khao Lak')" class="text-teal-700 hover:underline font-semibold text-xs mt-2 inline-block">
-                  <i class="fa-solid fa-location-dot mr-1"></i> Locate JW Marriott
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 flex justify-between items-center">
-          <span><i class="fa-solid fa-circle-check text-teal-600 mr-1"></i> Best water quality & tropical beaches</span>
-          <button onclick="showMapView('west')" class="font-bold text-teal-700 hover:underline">Focus West Coast</button>
-        </div>
-      </section>
-
-      <!-- EAST COAST ITINERARY -->
-      <section class="bg-white p-6 rounded-3xl border border-orange-200 shadow-md flex flex-col justify-between space-y-5">
-        <div class="space-y-4">
-          <div class="flex items-center justify-between">
-            <span class="custom-badge bg-orange-100 text-orange-800">
-              <i class="fa-solid fa-car mr-1"></i> East Coast Plan (Zero Flight Hassle)
-            </span>
-            <span class="text-xs font-bold text-orange-700">100% Private Van (No Extra Flights)</span>
-          </div>
-
-          <div>
-            <h3 class="text-xl font-bold text-slate-900">Hua Hin & Pranburi</h3>
-            <p class="text-sm text-slate-600 mt-1">Land in Bangkok, hop in a comfortable private van, and arrive directly at your beach resort. Zero internal flights required.</p>
-          </div>
-
-          <div class="space-y-3">
-            <div class="p-4 rounded-xl bg-orange-50/60 border border-orange-100 flex items-start gap-3">
-              <div class="w-8 h-8 rounded-lg bg-orange-600 text-white flex items-center justify-center font-bold text-sm shrink-0">1</div>
-              <div class="text-sm">
-                <div class="font-bold text-slate-900 flex justify-between items-center">
-                  <span>Hua Hin</span>
-                  <a href="https://www.google.com/maps/search/?api=1&query=Hua+Hin+Beach+Prachuap+Khiri+Khan" target="_blank" class="text-xs text-orange-700 hover:underline flex items-center gap-1">
-                    Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                  </a>
-                </div>
-                <p class="text-slate-600 text-xs mt-1">3-hour private drive south from BKK airport. Royal seaside town, long flat beach, modern shopping malls for baby supplies, top-tier international hospital.</p>
-                <button onclick="focusLocation(12.5684, 99.9577, 'Hua Hin Town & Beach')" class="text-orange-700 hover:underline font-semibold text-xs mt-2 inline-block">
-                  <i class="fa-solid fa-location-dot mr-1"></i> Locate on Map
-                </button>
-              </div>
-            </div>
-
-            <div class="p-4 rounded-xl bg-orange-50/60 border border-orange-100 flex items-start gap-3">
-              <div class="w-8 h-8 rounded-lg bg-orange-600 text-white flex items-center justify-center font-bold text-sm shrink-0">2</div>
-              <div class="text-sm">
-                <div class="font-bold text-slate-900 flex justify-between items-center">
-                  <span>Pranburi</span>
-                  <a href="https://www.google.com/maps/search/?api=1&query=Pranburi+Beach+Thailand" target="_blank" class="text-xs text-orange-700 hover:underline flex items-center gap-1">
-                    Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                  </a>
-                </div>
-                <p class="text-slate-600 text-xs mt-1">30 minutes south of Hua Hin. Peaceful, boutique resort vibe with quiet beaches. Easy return 3h van drive back to Bangkok at the end.</p>
-                <button onclick="focusLocation(12.3920, 99.9926, 'Pranburi Beach')" class="text-orange-700 hover:underline font-semibold text-xs mt-2 inline-block">
-                  <i class="fa-solid fa-location-dot mr-1"></i> Locate on Map
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 flex justify-between items-center">
-          <span><i class="fa-solid fa-shield-halved text-orange-600 mr-1"></i> Absolute lowest logistical stress</span>
-          <button onclick="showMapView('east')" class="font-bold text-orange-700 hover:underline">Focus East Coast</button>
-        </div>
-      </section>
-
-    </div>
-
-    <!-- BANGKOK FINAL LEG & KOH SAMUI -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      
-      <!-- BANGKOK FINAL STAY -->
-      <section class="md:col-span-2 bg-gradient-to-br from-amber-900 via-stone-900 to-amber-950 text-white p-6 rounded-3xl shadow-md flex flex-col justify-between space-y-4">
-        <div class="space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="custom-badge bg-amber-400/20 text-amber-300 border border-amber-400/30">
-              <i class="fa-solid fa-building-columns mr-1"></i> Final Trip Leg (3 Days)
-            </span>
-            <a href="https://www.google.com/maps/search/?api=1&query=Anantara+Riverside+Bangkok+Resort" target="_blank" class="text-amber-300 hover:underline text-xs font-semibold flex items-center gap-1">
-              Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            </a>
-          </div>
-
-          <h3 class="text-2xl font-bold text-white">Bangkok Riverside Experience</h3>
-          <p class="text-sm text-stone-300">End your vacation with 3 memorable days in Bangkok staying at a riverside resort along the Chao Phraya River (e.g. <a href="https://www.google.com/maps/search/?api=1&query=Anantara+Riverside+Bangkok+Resort" target="_blank" class="underline text-amber-300">Anantara Riverside Bangkok Resort</a>).</p>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-2">
-            <div class="bg-white/10 p-3 rounded-xl border border-white/10">
-              <div class="font-bold text-amber-300 mb-1"><i class="fa-solid fa-ship mr-1"></i> Private Shuttle Boats</div>
-              <span class="text-stone-300">Avoid Bangkok road traffic with stroller-friendly resort boats taking you directly to BTS Skytrain stations and Asiatique night market.</span>
-            </div>
-            <div class="bg-white/10 p-3 rounded-xl border border-white/10">
-              <div class="font-bold text-amber-300 mb-1"><i class="fa-solid fa-tree-city mr-1"></i> Resort Oasis Vibe</div>
-              <span class="text-stone-300">Lush tropical gardens, large family pools, and quiet atmosphere for Lenny & Tom while staying close to the city center.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="pt-3 border-t border-white/10 flex justify-between items-center text-xs">
-          <span class="text-amber-200/80">Direct BKK Departure Home on EVA Air / KLM</span>
-          <button onclick="focusLocation(13.7058, 100.4908, 'Anantara Riverside Bangkok')" class="text-amber-300 hover:underline font-bold">
-            <i class="fa-solid fa-location-dot mr-1"></i> Locate Bangkok Stay
+        <div class="flex flex-wrap gap-2 text-xs">
+          <button onclick="resetMapView()" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 font-medium transition flex items-center gap-1.5">
+            <i class="fa-solid fa-expand text-slate-500"></i> Fit All Bases
+          </button>
+          <button onclick="toggleSavedPlaces()" id="btn-toggle-saved" class="px-3 py-1.5 rounded-lg border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-800 font-medium transition flex items-center gap-1.5">
+            <i class="fa-solid fa-star text-amber-500"></i> Toggle Saved Places
           </button>
         </div>
-      </section>
-
-      <!-- KOH SAMUI ALTERNATIVE -->
-      <section class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md flex flex-col justify-between space-y-4">
-        <div class="space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="custom-badge bg-purple-100 text-purple-800">
-              <i class="fa-solid fa-island-tropical mr-1"></i> Alternative Option
-            </span>
-            <a href="https://www.google.com/maps/search/?api=1&query=Samui+International+Airport+USM" target="_blank" class="text-purple-700 hover:underline text-xs font-semibold flex items-center gap-1">
-              Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            </a>
-          </div>
-
-          <h3 class="text-xl font-bold text-slate-900">Koh Samui</h3>
-          <p class="text-xs text-slate-600">Fly directly into Koh Samui (USM Airport). Excellent infrastructure for toddlers, calm waters, and stroller-friendly areas.</p>
-
-          <ul class="text-xs text-slate-700 space-y-2">
-            <li class="flex items-start gap-2">
-              <i class="fa-solid fa-circle-dot text-purple-600 mt-1"></i>
-              <span><a href="https://www.google.com/maps/search/?api=1&query=Fishermans+Village+Bophut+Koh+Samui" target="_blank" class="underline font-bold hover:text-purple-800">Bophut / Fisherman's Village:</a> Paved walking street, safe dining on the sand.</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <i class="fa-solid fa-circle-dot text-purple-600 mt-1"></i>
-              <span><a href="https://www.google.com/maps/search/?api=1&query=Choeng+Mon+Beach+Koh+Samui" target="_blank" class="underline font-bold hover:text-purple-800">Choeng Mon:</a> Shallow, gentle crescent bay ideal for Tom & Lenny.</span>
-            </li>
-          </ul>
-        </div>
-
-        <button onclick="focusLocation(9.5532, 100.0658, 'Koh Samui Island')" class="text-xs font-bold text-purple-700 hover:underline text-left">
-          <i class="fa-solid fa-location-dot mr-1"></i> View Koh Samui
-        </button>
-      </section>
-
-    </div>
-
-    <!-- COMPARISON TABLE SECTION -->
-    <section class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-4">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <div>
-          <h2 class="text-xl font-bold text-slate-900">West Coast vs. East Coast Side-by-Side</h2>
-          <p class="text-sm text-slate-600">Comparison designed specifically for traveling with a 3y toddler & 6m infant.</p>
-        </div>
       </div>
 
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm border-collapse">
-          <thead>
-            <tr class="border-b border-slate-200 bg-slate-50 text-slate-700">
-              <th class="p-3 font-semibold">Feature</th>
-              <th class="p-3 font-semibold text-teal-800">West Coast (Phuket & Khao Lak)</th>
-              <th class="p-3 font-semibold text-orange-800">East Coast (Hua Hin & Pranburi)</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-100 text-xs sm:text-sm">
-            <tr>
-              <td class="p-3 font-medium text-slate-900">Beach & Water Quality</td>
-              <td class="p-3 text-slate-600">⭐⭐⭐⭐⭐ Postcard blue, clear water, white soft sand</td>
-              <td class="p-3 text-slate-600">⭐⭐⭐ Very long flat beaches, greener water, tidal</td>
-            </tr>
-            <tr>
-              <td class="p-3 font-medium text-slate-900">Logistics & Travel Effort</td>
-              <td class="p-3 text-slate-600">Requires 1 short internal flight (HKT → BKK) at the end</td>
-              <td class="p-3 text-slate-600"><strong>Zero flights!</strong> 3-hour private van drive from BKK</td>
-            </tr>
-            <tr>
-              <td class="p-3 font-medium text-slate-900">Stroller Friendliness</td>
-              <td class="p-3 text-slate-600">Great in Bang Tao/Laguna flat paved resort zones</td>
-              <td class="p-3 text-slate-600">Excellent along Hua Hin promenade, resorts, & malls</td>
-            </tr>
-            <tr>
-              <td class="p-3 font-medium text-slate-900">Infant & Toddler Safety</td>
-              <td class="p-3 text-slate-600">Khao Lak shallow water (50m+ knee-deep) is ideal for Tom</td>
-              <td class="p-3 text-slate-600">Bangkok Hospital Hua Hin nearby; malls for baby AC breaks</td>
-            </tr>
-            <tr>
-              <td class="p-3 font-medium text-slate-900">Vibe & Atmosphere</td>
-              <td class="p-3 text-slate-600">Tropical holiday resort feel, quiet nature in Khao Lak</td>
-              <td class="p-3 text-slate-600">Royal seaside city mix with quiet boutique resorts in Pranburi</td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- MAP ELEMENT -->
+      <div id="map"></div>
+
+      <!-- MAP FOOTER INFO -->
+      <div class="flex flex-wrap items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100 gap-2">
+        <div class="flex flex-wrap items-center gap-4">
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-teal-600 inline-block border border-white"></span> Active Bases</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-blue-600 inline-block border border-white"></span> HKT Airport</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-400 inline-block border border-amber-600"></span> Saved Google Places</span>
+        </div>
+        <div class="text-[11px] text-slate-400 font-mono">
+          <i class="fa-solid fa-circle-info mr-1"></i> All road transfers are with private VIP air-conditioned minivans + baby car seats
+        </div>
       </div>
     </section>
 
-    <!-- PRO-TIPS & CHECKLIST -->
-    <section class="bg-gradient-to-r from-teal-900 to-emerald-900 text-white p-6 sm:p-8 rounded-3xl shadow-lg space-y-6">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center text-lg">
-          <i class="fa-solid fa-lightbulb"></i>
-        </div>
+    <!-- DETAILED BASE-BY-BASE / DAY-BY-DAY DRILL DOWN -->
+    <section class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-6">
+      
+      <!-- SUB-NAVIGATION: TABS PER BASE -->
+      <div class="border-b border-slate-200 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 class="text-xl font-bold">Essential Family Travel Checklist & Pro-Tips</h2>
-          <p class="text-xs text-teal-200">Key advice gathered for smooth flying and effortless ground transport in Thailand.</p>
+          <span class="text-xs font-bold uppercase tracking-wider text-teal-600 font-mono" id="active-option-label">Option 1 Details</span>
+          <h2 class="text-xl font-bold text-slate-900" id="active-option-title">Stay & Day-by-Day Breakdown</h2>
+        </div>
+
+        <!-- DYNAMIC BASE TABS -->
+        <div class="flex flex-wrap gap-2" id="base-tabs-container">
+          <!-- Populated dynamically via JS -->
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs sm:text-sm">
-        <div class="bg-white/10 p-5 rounded-2xl border border-white/10 space-y-2">
-          <h3 class="font-bold text-teal-300 flex items-center gap-2">
-            <i class="fa-solid fa-plane-arrival"></i> 1. Bassinet Priority
-          </h3>
-          <p class="text-slate-200 leading-relaxed">
-            Bassinet seats (bulkhead rows) sell out fast. Immediately after flight booking, call the airline call center to lock in bassinet seats for Lenny (6 months).
+      <!-- ACTIVE BASE CONTENT CONTAINER -->
+      <div id="base-detail-content" class="space-y-6">
+        <!-- Injected dynamically via renderBaseDetail() -->
+      </div>
+
+    </section>
+
+    <!-- TOP RESORTS VETTED FOR TOM (3y) & LENNY (6m) -->
+    <section class="bg-white p-6 sm:p-8 rounded-3xl border border-blue-200 shadow-md space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+        <div>
+          <span class="badge bg-blue-100 text-blue-900 font-semibold mb-1">
+            <i class="fa-solid fa-crown text-blue-600"></i> Top Vetted Stays
+          </span>
+          <h2 class="text-2xl font-bold text-slate-900">Featured 5-Star Resorts with AC Kids Clubs</h2>
+          <p class="text-xs sm:text-sm text-slate-600">Chosen for flat stroller paths, air-conditioned indoor soft play rooms, walk-in lagoon pools, and proximity to medical clinics.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- RESORT 1: JW MARRIOTT KHAO LAK -->
+        <div class="p-5 rounded-2xl border-2 border-blue-500 bg-gradient-to-b from-blue-50/40 via-white to-slate-50 flex flex-col justify-between space-y-4 shadow-sm hover:shadow-md transition">
+          <div class="space-y-3">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <span class="badge bg-blue-600 text-white text-[10px] mb-1">👑 #1 Top Family Pick</span>
+                <h3 class="text-lg font-bold text-slate-900">JW Marriott Khao Lak</h3>
+                <p class="text-xs text-blue-700 font-medium">Khuk Khak Beach, Khao Lak</p>
+              </div>
+              <span class="text-xs font-bold text-slate-600 flex items-center gap-1"><i class="fa-solid fa-star text-amber-500"></i> 4.7</span>
+            </div>
+
+            <p class="text-xs text-slate-600">
+              The gold standard for toddlers and infants. Has a 2.4km lagoon pool encircling the property with wave pool and Aqua Play fountains, plus the <strong>Family by JW indoor AC play club</strong>.
+            </p>
+
+            <ul class="text-xs text-slate-700 space-y-1.5 pt-1">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-snowflake text-blue-500"></i> Large indoor AC kids facility</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-water text-blue-500"></i> Walk-in lagoon pool & zero-entry depths</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-person-walking-luggage text-blue-500"></i> 100% stroller accessible pathways</li>
+            </ul>
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+            <a href="https://www.google.com/maps/search/?api=1&query=JW+Marriott+Khao+Lak+Resort+%26+Spa" target="_blank" class="text-blue-700 hover:underline font-bold flex items-center gap-1">
+              Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+            </a>
+            <button onclick="focusOnCoord(8.6830, 98.2405, 14, 'JW Marriott Khao Lak')" class="px-2.5 py-1 rounded bg-blue-100 text-blue-800 font-semibold hover:bg-blue-200 transition">
+              Map Pin
+            </button>
+          </div>
+        </div>
+
+        <!-- RESORT 2: DEVASOM KHAO LAK -->
+        <div class="p-5 rounded-2xl border border-amber-200 bg-gradient-to-b from-amber-50/40 via-white to-slate-50 flex flex-col justify-between space-y-4 shadow-sm hover:shadow-md transition">
+          <div class="space-y-3">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <span class="badge bg-amber-500 text-white text-[10px] mb-1">✨ Boutique Luxury</span>
+                <h3 class="text-lg font-bold text-slate-900">Devasom Khao Lak</h3>
+                <p class="text-xs text-amber-700 font-medium">Khuk Khak Lagoon, Khao Lak</p>
+              </div>
+              <span class="text-xs font-bold text-slate-600 flex items-center gap-1"><i class="fa-solid fa-star text-amber-500"></i> 4.9</span>
+            </div>
+
+            <p class="text-xs text-slate-600">
+              Ultra-high-end boutique feel with authentic Thai heritage design. Michelin-recognized dining on site, intimate private villas, and the <strong>Devasom Explorers AC Kids Club</strong>.
+            </p>
+
+            <ul class="text-xs text-slate-700 space-y-1.5 pt-1">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-gem text-amber-600"></i> High luxury aesthetic & tranquil grounds</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-snowflake text-amber-600"></i> AC kids play lounge & craft room</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-water text-amber-600"></i> Calm natural freshwater lagoon</li>
+            </ul>
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+            <a href="https://www.google.com/maps/search/?api=1&query=Devasom+Khao+Lak+Beach+Resort+%26+Villas" target="_blank" class="text-amber-800 hover:underline font-bold flex items-center gap-1">
+              Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+            </a>
+            <button onclick="focusOnCoord(8.6880, 98.2415, 14, 'Devasom Khao Lak')" class="px-2.5 py-1 rounded bg-amber-100 text-amber-800 font-semibold hover:bg-amber-200 transition">
+              Map Pin
+            </button>
+          </div>
+        </div>
+
+        <!-- RESORT 3: SAII LAGUNA PHUKET -->
+        <div class="p-5 rounded-2xl border border-teal-200 bg-gradient-to-b from-teal-50/40 via-white to-slate-50 flex flex-col justify-between space-y-4 shadow-sm hover:shadow-md transition">
+          <div class="space-y-3">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <span class="badge bg-teal-600 text-white text-[10px] mb-1">🏖️ Phuket Top Base</span>
+                <h3 class="text-lg font-bold text-slate-900">SAii Laguna Phuket</h3>
+                <p class="text-xs text-teal-700 font-medium">Bang Tao Beach / Laguna</p>
+              </div>
+              <span class="text-xs font-bold text-slate-600 flex items-center gap-1"><i class="fa-solid fa-star text-amber-500"></i> 4.6</span>
+            </div>
+
+            <p class="text-xs text-slate-600">
+              Located right in the flat Laguna enclave. Direct beach frontage on Bang Tao, large 55m waterslide for kids, zero-entry lagoon pool, and access to the free Laguna shuttle boats and walkways.
+            </p>
+
+            <ul class="text-xs text-slate-700 space-y-1.5 pt-1">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-teal-600"></i> Enclosed, gated resort community</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-person-walking text-teal-600"></i> Paved strolls to Boat Avenue & Porto</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-truck-medical text-teal-600"></i> 25 mins from Bangkok Hospital Clinic</li>
+            </ul>
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+            <a href="https://www.google.com/maps/search/?api=1&query=SAii+Laguna+Phuket" target="_blank" class="text-teal-800 hover:underline font-bold flex items-center gap-1">
+              Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+            </a>
+            <button onclick="focusOnCoord(7.9945, 98.2942, 14, 'SAii Laguna Phuket')" class="px-2.5 py-1 rounded bg-teal-100 text-teal-800 font-semibold hover:bg-teal-200 transition">
+              Map Pin
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ESSENTIAL TRAVEL PREP FOR 3Y & 6M -->
+    <section class="bg-gradient-to-r from-teal-950 via-slate-900 to-teal-900 text-white p-6 sm:p-7 rounded-3xl shadow-lg space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center text-base">
+          <i class="fa-solid fa-clipboard-check"></i>
+        </div>
+        <div>
+          <h2 class="text-lg font-bold">West Coast Family Travel Logistics</h2>
+          <p class="text-xs text-slate-300">Action items locked in for Tom & Lenny</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+        <div class="bg-white/10 p-4 rounded-xl border border-white/10 space-y-1.5">
+          <div class="font-bold text-teal-300 flex items-center gap-2">
+            <i class="fa-solid fa-bed"></i> Bassinet Confirmed
+          </div>
+          <p class="text-slate-300 leading-relaxed">
+            Lenny is ticketed as infant (no seat). Call Emirates to confirm bulkhead bassinet allocation for flights EK146/EK390/EK391/EK149.
           </p>
         </div>
 
-        <div class="bg-white/10 p-5 rounded-2xl border border-white/10 space-y-2">
-          <h3 class="font-bold text-teal-300 flex items-center gap-2">
-            <i class="fa-solid fa-van-shuttle"></i> 2. Private Van Transfers
-          </h3>
-          <p class="text-slate-200 leading-relaxed">
-            Pre-book private VIP vans for all airport transfers (Phuket to Khao Lak or BKK to Hua Hin). You can request infant car seats & toddler booster seats in advance.
+        <div class="bg-white/10 p-4 rounded-xl border border-white/10 space-y-1.5">
+          <div class="font-bold text-teal-300 flex items-center gap-2">
+            <i class="fa-solid fa-van-shuttle"></i> VIP Van Transfers
+          </div>
+          <p class="text-slate-300 leading-relaxed">
+            All routes (HKT &harr; Khao Lak &harr; Bang Tao) are scenic smooth roads (1 to 1.5h). We can pre-book a Toyota Commuter VIP van with 2 child car seats.
           </p>
         </div>
 
-        <div class="bg-white/10 p-5 rounded-2xl border border-white/10 space-y-2">
-          <h3 class="font-bold text-teal-300 flex items-center gap-2">
-            <i class="fa-solid fa-umbrella-beach"></i> 3. Shallow Water Gear
-          </h3>
-          <p class="text-slate-200 leading-relaxed">
-            Bring UV sunsuits and puddle-jumper floaties for Tom (3y), plus a compact travel stroller with a large sun canopy or UV cover for Lenny.
+        <div class="bg-white/10 p-4 rounded-xl border border-white/10 space-y-1.5">
+          <div class="font-bold text-teal-300 flex items-center gap-2">
+            <i class="fa-solid fa-sun"></i> Andaman Season (Feb)
+          </div>
+          <p class="text-slate-300 leading-relaxed">
+            February is peak dry season: zero monsoon swell, flat calm waters, crystal visibility, and sunny ~31&deg;C days with gentle sea breezes.
           </p>
         </div>
       </div>
@@ -822,236 +444,504 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800 mt-auto">
-    <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
-      <p>Thailand February 2027 Family Vacation Planner • Prepared for Nitay & Adi</p>
-      <p class="text-slate-500">Served via Dokploy & Cloudflare Tunnel at <a href="https://thailand.nyr-solutions.org" target="_blank" class="text-teal-400 underline">thailand.nyr-solutions.org</a> • <a href="https://maps.app.goo.gl/sa1MrFq7r9cCv3rQ7" target="_blank" class="text-amber-400 underline">Google Maps List Synced</a></p>
+  <footer class="bg-slate-900 text-slate-400 text-xs py-5 border-t border-slate-800 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-1">
+      <p>Thailand Feb 2027 Family Trip Hub • Nitay, Adi, Tom & Lenny</p>
+      <p class="text-slate-500">Live Hub: <a href="https://thailand.nyr-solutions.org" class="text-teal-400 underline">thailand.nyr-solutions.org</a> • Emirates Booking: CI5283</p>
     </div>
   </footer>
 
-  <!-- LEAFLET MAP SCRIPT & DATA -->
+  <!-- LEAFLET & APP LOGIC SCRIPT -->
   <script>
-    // Initialize Map centered near Thailand / SE Asia
-    const map = L.map('map').setView([10.5000, 99.2000], 6);
+    // --- ITINERARY DATA ARCHITECTURE ---
+    const itineraries = {
+      1: {
+        id: 1,
+        name: "Option 1: Ultra-Relaxed",
+        tag: "Recommended for 3y & 6m",
+        summary: "Only 1 easy hotel change over 22 days. Start in peaceful, shallow-water Khao Lak, then move to upscale, stroller-friendly Bang Tao in Phuket.",
+        bases: [
+          {
+            id: "opt1-base1",
+            name: "Base 1: Khao Lak (11 Nights)",
+            dates: "Feb 3 – Feb 14, 2027",
+            location: "Khao Lak (Khuk Khak / Bangsak)",
+            lat: 8.6830, lng: 98.2405,
+            transfer: "75 min private VIP van from Phuket Airport (HKT)",
+            vibe: "Serene, wide shallow beaches, massive pool lagoons, lush nature.",
+            stayRec: "JW Marriott Khao Lak (or Devasom / Avani+)",
+            overview: "Khao Lak has the calmest and safest waters in Thailand during February. The water stays ankle-to-knee deep for 50+ meters, making it exceptionally safe for Tom to splash around. No roaring jet skis or crowded beach bars.",
+            days: [
+              { day: "Day 1 (Feb 3)", title: "Arrival & Unwind", desc: "Land HKT at 07:15 AM. Smooth 75m private van to Khao Lak. Settle in, splash in shallow pool, take AC afternoon nap." },
+              { day: "Day 2–4 (Feb 4–6)", title: "Resort Lagoon & Beach Life", desc: "Mornings at the beach; afternoons in the indoor AC kids club when the sun is strong. Sunset beach stroll with stroller." },
+              { day: "Day 5 (Feb 7)", title: "Khao Lak Sea Turtle Conservation", desc: "Short 20-min excursion to the Thai Navy Turtle Sanctuary. Tom will love seeing the baby turtles!" },
+              { day: "Day 6–8 (Feb 8–10)", title: "Devasom Lagoon & Local Cafes", desc: "Explore Khuk Khak lagoon, family picnic by the shade, visit Memories Beach Bar for fresh coconut waters." },
+              { day: "Day 9–11 (Feb 11–13)", title: "Pure Slow Paced Relaxation", desc: "Spa afternoon for parents, splash play with Tom, quiet stroller beach walks for Lenny's naps." }
+            ]
+          },
+          {
+            id: "opt1-base2",
+            name: "Base 2: Bang Tao / Laguna, Phuket (10 Nights)",
+            dates: "Feb 14 – Feb 24, 2027",
+            location: "Bang Tao Beach & Laguna Enclave",
+            lat: 7.9922, lng: 98.2934,
+            transfer: "80 min scenic private van transfer south from Khao Lak",
+            vibe: "Upscale, paved stroller sidewalks, excellent family restaurants, close to airport.",
+            stayRec: "SAii Laguna Phuket / Angsana Laguna / Banyan Tree",
+            overview: "Laguna Phuket is a master-planned, gated resort community with flat paved pathways, calm internal lagoons with free shuttle ferries, and dozens of high-end family restaurants at Boat Avenue and Porto de Phuket.",
+            days: [
+              { day: "Day 12 (Feb 14)", title: "Transfer to Bang Tao", desc: "Check out after breakfast. Easy 80m drive to Laguna. Check in to your second resort; stroll Boat Avenue." },
+              { day: "Day 13–15 (Feb 15–17)", title: "Laguna Ferry & Flat Strolls", desc: "Take the complimentary open-air lagoon boat between resorts. Easy stroller pushing through tree-shaded sidewalks." },
+              { day: "Day 16 (Feb 18)", title: "Family Day at Blue Tree Phuket", desc: "Option to visit Blue Tree crystal lagoon waterpark or relax at Catch Beach Club (very kid-friendly lunch setup)." },
+              { day: "Day 17–20 (Feb 19–22)", title: "Bang Tao Beach & Dining", desc: "Beachfront dinners with feet in the sand while kids play. Superb organic grocery markets nearby for baby food." },
+              { day: "Day 21 (Feb 23)", title: "Final Souvenirs & Sunset Dinner", desc: "Pack bags comfortably, enjoy a long final sunset dinner overlooking the Andaman sea." },
+              { day: "Day 22 (Feb 24)", title: "Departure to Airport", desc: "Morning breakfast. 25-minute stress-free transfer to HKT for your 09:20 AM Emirates flight back home." }
+            ]
+          }
+        ]
+      },
 
-    // OpenStreetMap Tile Layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+      2: {
+        id: 2,
+        name: "Option 2: The Andaman Trio",
+        tag: "Balanced Variety (3 Bases)",
+        summary: "3 bases connected entirely by private road vehicles (zero boats required). Splits time between Phuket, Khao Lak, and the dramatic karst cliffs of Krabi (Ao Nang / Klong Muang).",
+        bases: [
+          {
+            id: "opt2-base1",
+            name: "Base 1: Bang Tao, Phuket (6 Nights)",
+            dates: "Feb 3 – Feb 9, 2027",
+            location: "Bang Tao / Laguna Enclave",
+            lat: 7.9922, lng: 98.2934,
+            transfer: "25 min from Phuket Airport (HKT)",
+            vibe: "Easy soft landing, great infrastructure, supermarkets and pharmacies.",
+            stayRec: "SAii Laguna Phuket / Dusit Thani Laguna",
+            overview: "Start right near the airport so the kids don't have a long drive after landing from Dubai. Gentle introduction to Thailand with all modern conveniences.",
+            days: [
+              { day: "Day 1–2", title: "Soft Landing & Acclimatization", desc: "Unpack, recover from flights, enjoy Laguna resort pools and shaded beach." },
+              { day: "Day 3–4", title: "Boat Avenue & Laguna Exploration", desc: "Dining at top kid-friendly restaurants, stroller walks along lagoon." },
+              { day: "Day 5–6", title: "Beach Clubs & Sunsets", desc: "Relaxed beachfront vibes at Bang Tao and Surin Beach." }
+            ]
+          },
+          {
+            id: "opt2-base2",
+            name: "Base 2: Khao Lak (9 Nights)",
+            dates: "Feb 9 – Feb 18, 2027",
+            location: "Khao Lak (Khuk Khak Beach)",
+            lat: 8.6830, lng: 98.2405,
+            transfer: "80 min road transfer north",
+            vibe: "Wide open beaches, shallow seas, total relaxation.",
+            stayRec: "JW Marriott Khao Lak Resort & Spa",
+            overview: "The core relaxation heart of the holiday. Uninterrupted beach walks, 2.4km lagoon pool, and wonderful toddler clubs.",
+            days: [
+              { day: "Day 7–9", title: "JW Marriott Lagoon Life", desc: "Aqua play for Tom, quiet pool cabana for Lenny, beach dinners." },
+              { day: "Day 10–12", title: "Turtle Center & Local Markets", desc: "Visit the turtle sanctuary and Bang Niang market." },
+              { day: "Day 13–15", title: "Shallow Seas & Spa", desc: "Long barefoot beach sessions and massage pavilions." }
+            ]
+          },
+          {
+            id: "opt2-base3",
+            name: "Base 3: Krabi Coast - Klong Muang (6 Nights)",
+            dates: "Feb 18 – Feb 24, 2027",
+            location: "Klong Muang / Tubkaek, Krabi",
+            lat: 8.0550, lng: 98.7620,
+            transfer: "2h 15m scenic road transfer southeast from Khao Lak",
+            vibe: "Limestone cliff panoramas, quiet beach, proximity to Rayavadee.",
+            stayRec: "Sofitel Krabi Phokeethra / Phulay Bay Ritz-Carlton",
+            overview: "Krabi's mainland coast offers the legendary limestone scenery without needing choppy boat transfers. Klong Muang is quiet, flat, and family-oriented.",
+            days: [
+              { day: "Day 16–18", title: "Spectacular Krabi Scenery", desc: "Views of dramatic offshore islands from your beach lounger." },
+              { day: "Day 19–20", title: "Visit Railay / Rayavadee", desc: "Option for a short calm morning boat to see the saved Rayavadee cliffs." },
+              { day: "Day 21–22", title: "Return to Phuket Airport", desc: "2h 15m private van direct to HKT Airport for departure." }
+            ]
+          }
+        ]
+      },
 
-    // Custom Icon Creators
-    function createIcon(color, border = 'white') {
-      return L.divIcon({
-        className: 'custom-map-pin',
-        html: `<div style="background-color: ${color}; width: 24px; height: 24px; border-radius: 50%; border: 3px solid ${border}; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; color: white; font-size: 10px;"></div>`,
-        iconSize: [24, 24],
-        iconAnchor: [12, 12]
-      });
-    }
-
-    const icons = {
-      airport: createIcon('#2563eb'), // Blue
-      west: createIcon('#0d9488'),    // Teal
-      east: createIcon('#ea580c'),    // Orange
-      samui: createIcon('#9333ea'),   // Purple
-      bkk: createIcon('#d97706'),     // Amber
-      saved: createIcon('#f59e0b', '#78350f'),   // Gold Star Saved Place
-      jw: createIcon('#2563eb', '#1e3a8a'),      // Blue Crown JW Marriott #1
-      devasom: createIcon('#d97706', '#78350f'), // Amber Devasom #2
-      khaolak: createIcon('#059669', '#064e3b')  // Emerald Resort
+      3: {
+        id: 3,
+        name: "Option 3: Coastal & Island Escape",
+        tag: "Boutique Island Haven",
+        summary: "Experience a peaceful tropical island without long ferry journeys. Uses luxury resort private catamarans to reach Koh Yao Noi in Phang Nga Bay.",
+        bases: [
+          {
+            id: "opt3-base1",
+            name: "Base 1: Khao Lak (9 Nights)",
+            dates: "Feb 3 – Feb 12, 2027",
+            location: "Khao Lak",
+            lat: 8.6830, lng: 98.2405,
+            transfer: "75 min from HKT Airport",
+            vibe: "Shallow sea, kids paradise, JW Marriott.",
+            stayRec: "JW Marriott Khao Lak",
+            overview: "Deep relaxation right upon landing.",
+            days: [
+              { day: "Day 1–9", title: "Khao Lak Beach & Lagoon Respite", desc: "Daily swimming, AC kids club, tranquil infant routine." }
+            ]
+          },
+          {
+            id: "opt3-base2",
+            name: "Base 2: Koh Yao Noi Island (5 Nights)",
+            dates: "Feb 12 – Feb 17, 2027",
+            location: "Koh Yao Noi Island",
+            lat: 8.1350, lng: 98.6180,
+            transfer: "45m van to pier + 30m private resort catamaran",
+            vibe: "Pristine island tranquility, wooden villas, hornbills, panoramic bay.",
+            stayRec: "Santhiya Koh Yao Yai / Six Senses Yao Noi / Cape Kudu",
+            overview: "A secluded island paradise in Phang Nga Bay. Extremely quiet, authentic, surrounded by emerald waters and jungle.",
+            days: [
+              { day: "Day 10–12", title: "Island Time", desc: "Zero traffic, gentle breezes, infinity pool looking out at limestone islands." },
+              { day: "Day 13–14", title: "Nature & Local Life", desc: "Spot hornbills in the trees, gentle boat rides in calm bay waters." }
+            ]
+          },
+          {
+            id: "opt3-base3",
+            name: "Base 3: Bang Tao, Phuket (7 Nights)",
+            dates: "Feb 17 – Feb 24, 2027",
+            location: "Bang Tao Beach",
+            lat: 7.9922, lng: 98.2934,
+            transfer: "30m boat back to Phuket + 20m van to Bang Tao",
+            vibe: "Final comfort leg with easy airport access.",
+            stayRec: "SAii Laguna Phuket",
+            overview: "Return to mainland luxury for easy shopping, great restaurants, and a calm final week.",
+            days: [
+              { day: "Day 15–21", title: "Laguna Luxury & Dining", desc: "Beach clubs, stroller dinners, relaxing pool days." },
+              { day: "Day 22 (Feb 24)", title: "Departure from HKT", desc: "25 min to airport for morning Emirates flight." }
+            ]
+          }
+        ]
+      }
     };
 
-    // Locations Data with Google Maps Links
-    const locations = [
-      // Top Priority Luxury / Kids Resorts
-      {
-        name: "👑 #1 Priority: JW Marriott Khao Lak Resort & Spa",
-        lat: 8.6830, lng: 98.2405,
-        type: "jw",
-        glink: "https://www.google.com/maps/search/?api=1&query=JW+Marriott+Khao+Lak+Resort+%26+Spa",
-        desc: "<strong>👑 #1 Top Pick:</strong> Indoor AC <em>Family by JW Club</em>, 2.4km winding lagoon pool, Aqua Play area, true 5-star Marriott luxury."
-      },
-      {
-        name: "✨ #2 Priority: Devasom Khao Lak Beach Resort & Villas",
-        lat: 8.6880, lng: 98.2415,
-        type: "devasom",
-        glink: "https://www.google.com/maps/search/?api=1&query=Devasom+Khao+Lak+Beach+Resort+%26+Villas",
-        desc: "<strong>✨ #2 Boutique Luxury Pick:</strong> Ultra-high-end heritage architecture, Michelin-featured dining, indoor AC <em>Explorers Kids Club</em>."
-      },
-      {
-        name: "🌴 #3 Priority: Avani+ Khao Lak Resort",
-        lat: 8.7512, lng: 98.2325,
-        type: "khaolak",
-        glink: "https://www.google.com/maps/search/?api=1&query=Avani%2B+Khao+Lak+Resort",
-        desc: "<strong>🌴 #3 Priority:</strong> 2-storey indoor AC AvaniKids club, splash park, modern family suites on quiet Bangsak beach."
-      },
-      {
-        name: "#4 Priority: The Sands Khao Lak by Katathani",
-        lat: 8.6468, lng: 98.2464,
-        type: "khaolak",
-        glink: "https://www.google.com/maps/search/?api=1&query=The+Sands+Khao+Lak+by+Katathani",
-        desc: "Toddler water park zone, zero-entry pools, Sands Castle AC club. Family mega-resort feel."
-      },
-      {
-        name: "#5 Priority: X10 Khao Lak Resort",
-        lat: 8.6445, lng: 98.2458,
-        type: "khaolak",
-        glink: "https://www.google.com/maps/search/?api=1&query=X10+Khao+Lak+Resort",
-        desc: "2 dedicated children's pools, splash park, family suites near Nang Thong town."
-      },
-
-      // Adi & Nitay Google Maps Saved Places
+    // Saved Google Places Data
+    const savedPlaces = [
       {
         name: "⭐ Rayavadee Resort (Saved Place)",
         lat: 8.0068, lng: 98.8378,
-        type: "saved",
-        glink: "https://www.google.com/maps/search/?api=1&query=Rayavadee+Resort+Krabi",
-        desc: "<strong>⭐ Saved in List:</strong> Luxury 5-star resort in Railay / Ao Nang, Krabi. Beautiful limestone cliffs & calm beaches."
+        desc: "Luxury 5-star resort in Railay / Ao Nang, Krabi. Beautiful limestone cliffs & calm beaches."
       },
       {
         name: "⭐ Common Grounds Coffee (Saved Place)",
         lat: 9.7126, lng: 99.9832,
-        type: "saved",
-        glink: "https://www.google.com/maps/search/?api=1&query=Common+Grounds+Coffee+Koh+Phangan",
-        desc: "<strong>⭐ Saved in List:</strong> Top-rated specialty coffee shop with healthy breakfast and garden atmosphere."
-      },
-
-      // Core Airports & Recommended Destinations
-      {
-        name: "Bangkok Suvarnabhumi Airport (BKK)",
-        lat: 13.6900, lng: 100.7501,
-        type: "airport",
-        glink: "https://www.google.com/maps/search/?api=1&query=Suvarnabhumi+Airport+BKK",
-        desc: "Main international gateway. Arrival hub for direct flights or starting point for Hua Hin drive."
-      },
-      {
-        name: "Phuket International Airport (HKT)",
-        lat: 8.1132, lng: 98.3169,
-        type: "airport",
-        glink: "https://www.google.com/maps/search/?api=1&query=Phuket+International+Airport+HKT",
-        desc: "West Coast airport hub. 25m to Bang Tao, 90m to Khao Lak."
-      },
-      {
-        name: "Dubai International Airport (DXB)",
-        lat: 25.2532, lng: 55.3657,
-        type: "airport",
-        glink: "https://www.google.com/maps/search/?api=1&query=Dubai+International+Airport+DXB",
-        desc: "Emirates 1-stop connection hub. Free baby strollers & quiet family spaces."
-      },
-      {
-        name: "Bang Tao / Laguna (Phuket)",
-        lat: 7.9922, lng: 98.2934,
-        type: "west",
-        glink: "https://www.google.com/maps/search/?api=1&query=Bang+Tao+Beach+Laguna+Phuket",
-        desc: "Flat paved sidewalks, high-end family resorts, calm beach clubs."
-      },
-      {
-        name: "Hua Hin Town & Beach",
-        lat: 12.5684, lng: 99.9577,
-        type: "east",
-        glink: "https://www.google.com/maps/search/?api=1&query=Hua+Hin+Beach+Prachuap+Khiri+Khan",
-        desc: "3h private van drive from BKK. Royal beach town, malls, Bangkok Hospital."
-      },
-      {
-        name: "Pranburi Beach",
-        lat: 12.3920, lng: 99.9926,
-        type: "east",
-        glink: "https://www.google.com/maps/search/?api=1&query=Pranburi+Beach+Thailand",
-        desc: "30m south of Hua Hin. Quiet, boutique beach vibe."
-      },
-      {
-        name: "Anantara Riverside Bangkok",
-        lat: 13.7058, lng: 100.4908,
-        type: "bkk",
-        glink: "https://www.google.com/maps/search/?api=1&query=Anantara+Riverside+Bangkok+Resort",
-        desc: "Lush resort stay on Chao Phraya river with private shuttle boats to Skytrain."
+        desc: "Top-rated specialty coffee shop with healthy breakfast and garden atmosphere (Koh Phangan)."
       }
     ];
 
-    const mapMarkers = [];
+    // Airport data
+    const hktAirport = {
+      name: "Phuket International Airport (HKT)",
+      lat: 8.1132, lng: 98.3169,
+      desc: "Emirates arrival & departure hub for flights EK 390 / EK 391."
+    };
 
-    // Add Markers to Map with Google Maps Links in Popup
-    locations.forEach(loc => {
-      const marker = L.marker([loc.lat, loc.lng], { icon: icons[loc.type] || icons.west }).addTo(map);
-      marker.bindPopup(`
-        <div class="text-slate-800 p-1 space-y-1">
-          <h4 class="font-bold text-sm text-slate-900">${loc.name}</h4>
-          <p class="text-xs text-slate-600">${loc.desc}</p>
-          <div class="pt-1 text-xs">
-            <a href="${loc.glink}" target="_blank" class="text-blue-700 hover:underline font-bold inline-flex items-center gap-1">
-              Open in Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-            </a>
+    // --- LEAFLET MAP INITIALIZATION ---
+    const map = L.map('map').setView([8.35, 98.45], 9);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    function createMarkerIcon(color, border = '#ffffff', pulse = false) {
+      return L.divIcon({
+        className: 'custom-pin',
+        html: `<div style="background-color: ${color}; width: 26px; height: 26px; border-radius: 50%; border: 3px solid ${border}; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; color: white; font-size: 11px; font-weight: bold;">
+                 <i class="fa-solid fa-location-dot"></i>
+               </div>`,
+        iconSize: [26, 26],
+        iconAnchor: [13, 13]
+      });
+    }
+
+    const icons = {
+      base: createMarkerIcon('#0d9488', '#ffffff'),
+      airport: createMarkerIcon('#2563eb', '#ffffff'),
+      saved: createMarkerIcon('#f59e0b', '#78350f')
+    };
+
+    let activeOption = 1;
+    let activeBaseIndex = 0;
+    let markersLayer = L.layerGroup().addTo(map);
+    let routesLayer = L.layerGroup().addTo(map);
+    let savedLayer = L.layerGroup().addTo(map);
+    let showSaved = true;
+
+    // Render Saved Places
+    function renderSavedPlaces() {
+      savedLayer.clearLayers();
+      if (!showSaved) return;
+
+      savedPlaces.forEach(p => {
+        const marker = L.marker([p.lat, p.lng], { icon: icons.saved }).addTo(savedLayer);
+        marker.bindPopup(`
+          <div class="p-1 space-y-1">
+            <span class="badge bg-amber-100 text-amber-900 text-[10px]">Saved Place</span>
+            <h4 class="font-bold text-sm text-slate-900">${p.name}</h4>
+            <p class="text-xs text-slate-600">${p.desc}</p>
+            <div class="pt-1">
+              <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name)}" target="_blank" class="text-xs text-blue-700 hover:underline font-bold">Open Google Maps &rarr;</a>
+            </div>
           </div>
+        `);
+      });
+    }
+
+    function toggleSavedPlaces() {
+      showSaved = !showSaved;
+      const btn = document.getElementById('btn-toggle-saved');
+      if (showSaved) {
+        btn.className = "px-3 py-1.5 rounded-lg border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-800 font-medium transition flex items-center gap-1.5";
+      } else {
+        btn.className = "px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-100 text-slate-400 font-medium transition flex items-center gap-1.5";
+      }
+      renderSavedPlaces();
+    }
+
+    // Update Map for Selected Option
+    function updateMapForOption(optId) {
+      markersLayer.clearLayers();
+      routesLayer.clearLayers();
+
+      const opt = itineraries[optId];
+      const points = [];
+
+      // Add Airport Marker
+      const aptMarker = L.marker([hktAirport.lat, hktAirport.lng], { icon: icons.airport }).addTo(markersLayer);
+      aptMarker.bindPopup(`
+        <div class="p-1 space-y-1">
+          <span class="badge bg-blue-100 text-blue-900 text-[10px]">Flight Hub</span>
+          <h4 class="font-bold text-sm text-slate-900">${hktAirport.name}</h4>
+          <p class="text-xs text-slate-600">${hktAirport.desc}</p>
         </div>
       `);
-      mapMarkers.push({ name: loc.name, marker: marker, lat: loc.lat, lng: loc.lng, type: loc.type });
-    });
+      points.push([hktAirport.lat, hktAirport.lng]);
 
-    // Polylines for Routes
-    const routeWest = L.polyline([
-      [8.1132, 98.3169], // HKT Airport
-      [7.9922, 98.2934], // Bang Tao
-      [8.6830, 98.2405]  // JW Marriott Khao Lak
-    ], { color: '#2563eb', weight: 4, dashArray: '6, 8', opacity: 0.8 }).addTo(map);
+      // Add Base Markers
+      opt.bases.forEach((b, idx) => {
+        const marker = L.marker([b.lat, b.lng], { icon: icons.base }).addTo(markersLayer);
+        marker.bindPopup(`
+          <div class="p-1 space-y-1">
+            <span class="badge bg-teal-100 text-teal-800 text-[10px]">Base ${idx + 1}</span>
+            <h4 class="font-bold text-sm text-slate-900">${b.name}</h4>
+            <p class="text-xs text-teal-700 font-medium">${b.dates}</p>
+            <p class="text-xs text-slate-600">${b.vibe}</p>
+            <div class="pt-1">
+              <button onclick="selectBaseTab(${idx})" class="text-xs text-teal-800 font-bold underline">View Itinerary & Days &rarr;</button>
+            </div>
+          </div>
+        `);
+        points.push([b.lat, b.lng]);
+      });
 
-    const routeEast = L.polyline([
-      [13.6900, 100.7501], // BKK Airport
-      [12.5684, 99.9577],  // Hua Hin
-      [12.3920, 99.9926]   // Pranburi
-    ], { color: '#ea580c', weight: 4, dashArray: '6, 8', opacity: 0.8 }).addTo(map);
+      // Add route lines
+      if (opt.bases.length >= 2) {
+        const routeCoords = [ [hktAirport.lat, hktAirport.lng] ];
+        opt.bases.forEach(b => routeCoords.push([b.lat, b.lng]));
+        routeCoords.push([hktAirport.lat, hktAirport.lng]); // return loop
 
-    // Map View Switcher Function
-    function showMapView(view) {
-      // Reset button styles
-      ['all', 'khaolak', 'saved', 'west', 'east', 'bkk'].forEach(id => {
-        const btn = document.getElementById(`btn-${id}`);
-        if (btn) {
-          btn.className = "px-3.5 py-2 rounded-xl font-medium border border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+        L.polyline(routeCoords, {
+          color: '#0d9488',
+          weight: 4,
+          opacity: 0.75,
+          dashArray: '6, 8'
+        }).addTo(routesLayer);
+      }
+
+      // Fit map bounds
+      if (points.length > 0) {
+        map.fitBounds(L.latLngBounds(points), { padding: [50, 50], maxZoom: 10 });
+      }
+    }
+
+    // Select Option Function
+    function selectOption(optId) {
+      activeOption = optId;
+      activeBaseIndex = 0;
+
+      // Update Button Styles
+      [1, 2, 3].forEach(id => {
+        const btn = document.getElementById(`opt-btn-${id}`);
+        if (id === optId) {
+          btn.className = "text-left p-5 rounded-2xl border-2 border-teal-600 bg-teal-50/20 shadow-md transition relative group";
+        } else {
+          btn.className = "text-left p-5 rounded-2xl border-2 border-slate-200 bg-white hover:border-slate-300 shadow-sm transition relative group";
         }
       });
-      const activeBtn = document.getElementById(`btn-${view}`);
-      if (activeBtn) {
-        if (view === 'khaolak') {
-          activeBtn.className = "px-3.5 py-2 rounded-xl font-medium border border-blue-600 bg-blue-600 text-white shadow-sm transition";
-        } else if (view === 'saved') {
-          activeBtn.className = "px-3.5 py-2 rounded-xl font-medium border border-amber-500 bg-amber-500 text-white shadow-sm transition";
-        } else {
-          activeBtn.className = "px-3.5 py-2 rounded-xl font-medium border border-teal-600 bg-teal-600 text-white shadow-sm transition";
+
+      // Update Map Subtitle
+      document.getElementById('map-subtitle').innerHTML = `Showing active bases and transfers for <strong>${itineraries[optId].name}</strong>`;
+
+      // Update Labels
+      document.getElementById('active-option-label').innerText = itineraries[optId].name;
+      document.getElementById('active-option-title').innerText = itineraries[optId].summary;
+
+      // Refresh Map & Tabs
+      updateMapForOption(optId);
+      renderBaseTabs();
+      renderBaseDetail();
+    }
+
+    // Render Base Navigation Tabs
+    function renderBaseTabs() {
+      const container = document.getElementById('base-tabs-container');
+      container.innerHTML = '';
+
+      const bases = itineraries[activeOption].bases;
+      bases.forEach((b, idx) => {
+        const btn = document.createElement('button');
+        btn.onclick = () => selectBaseTab(idx);
+        btn.id = `base-tab-${idx}`;
+        const isActive = idx === activeBaseIndex;
+
+        btn.className = isActive 
+          ? "px-4 py-2 rounded-xl text-xs font-bold bg-teal-600 text-white shadow-sm transition flex items-center gap-1.5"
+          : "px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1.5";
+
+        btn.innerHTML = `<span>${b.name.split(':')[0]}</span><span class="opacity-80 text-[10px] hidden sm:inline">(${b.dates.split('–')[0].trim()})</span>`;
+        container.appendChild(btn);
+      });
+    }
+
+    function selectBaseTab(idx) {
+      activeBaseIndex = idx;
+      renderBaseTabs();
+      renderBaseDetail();
+
+      // Pan to base
+      const b = itineraries[activeOption].bases[idx];
+      map.flyTo([b.lat, b.lng], 11, { duration: 1.2 });
+    }
+
+    // Render Detailed Content for Active Base
+    function renderBaseDetail() {
+      const b = itineraries[activeOption].bases[activeBaseIndex];
+      const container = document.getElementById('base-detail-content');
+
+      let daysHtml = '';
+      b.days.forEach(d => {
+        daysHtml += `
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-teal-50/30 transition space-y-1">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-teal-800">${d.day}</span>
+              <span class="font-semibold text-slate-800">${d.title}</span>
+            </div>
+            <p class="text-xs text-slate-600">${d.desc}</p>
+          </div>
+        `;
+      });
+
+      container.innerHTML = `
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- LEFT 2 COLS: OVERVIEW & DAYS -->
+          <div class="lg:col-span-2 space-y-5">
+            <div class="bg-gradient-to-r from-teal-50/70 to-slate-50 p-5 rounded-2xl border border-teal-100 space-y-3">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <span class="badge bg-teal-600 text-white text-[10px]">${b.dates}</span>
+                  <h3 class="text-xl font-bold text-slate-900 mt-1">${b.name}</h3>
+                </div>
+                <button onclick="focusOnCoord(${b.lat}, ${b.lng}, 12, '${b.name}')" class="px-3 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs shadow-sm flex items-center gap-1">
+                  <i class="fa-solid fa-crosshairs"></i> Center on Map
+                </button>
+              </div>
+
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">${b.overview}</p>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
+                <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
+                  <span class="text-slate-400 font-bold uppercase text-[10px] block">Transfer Logistics</span>
+                  <span class="font-semibold text-slate-800 flex items-center gap-1.5 mt-0.5">
+                    <i class="fa-solid fa-van-shuttle text-teal-600"></i> ${b.transfer}
+                  </span>
+                </div>
+                <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
+                  <span class="text-slate-400 font-bold uppercase text-[10px] block">Top Stay Recommendation</span>
+                  <span class="font-semibold text-slate-800 flex items-center gap-1.5 mt-0.5">
+                    <i class="fa-solid fa-hotel text-blue-600"></i> ${b.stayRec}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- DAILY ITINERARY BREAKDOWN -->
+            <div class="space-y-3">
+              <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-calendar-day text-teal-600"></i> Daily Flow & Suggested Rhythm
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                ${daysHtml}
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT COL: TIPS & GOOGLE MAPS SHORTCUTS -->
+          <div class="space-y-4">
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+              <h4 class="text-xs font-bold uppercase text-slate-500 tracking-wider">Toddler & Baby Focus</h4>
+              
+              <div class="space-y-2 text-xs text-slate-700">
+                <div class="flex items-start gap-2">
+                  <i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i>
+                  <span><strong>Shallow Waters:</strong> Perfect gentle slope for Tom (3y) to walk into the ocean without waves.</span>
+                </div>
+                <div class="flex items-start gap-2">
+                  <i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i>
+                  <span><strong>AC Cooldown:</strong> 12:00 to 15:00 peak sun is best spent in the indoor AC kids club or your villa.</span>
+                </div>
+                <div class="flex items-start gap-2">
+                  <i class="fa-solid fa-circle-check text-teal-600 mt-0.5"></i>
+                  <span><strong>Stroller Friendly:</strong> Flat property access ensures Lenny's stroller can go everywhere effortlessly.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs space-y-2 text-xs">
+              <h4 class="font-bold text-slate-900">Direct Google Maps Links</h4>
+              <ul class="space-y-1.5 text-slate-600">
+                <li>
+                  <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.location)}" target="_blank" class="text-blue-700 hover:underline font-semibold flex items-center justify-between">
+                    <span>${b.location}</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.stayRec)}" target="_blank" class="text-blue-700 hover:underline font-semibold flex items-center justify-between">
+                    <span>${b.stayRec}</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://maps.app.goo.gl/sa1MrFq7r9cCv3rQ7" target="_blank" class="text-amber-700 hover:underline font-semibold flex items-center justify-between">
+                    <span>Adi & Nitay Saved Map</span>
+                    <i class="fa-solid fa-star text-amber-500 text-[9px]"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      `;
+    }
+
+    function resetMapView() {
+      updateMapForOption(activeOption);
+    }
+
+    function focusOnCoord(lat, lng, zoom, title) {
+      map.flyTo([lat, lng], zoom, { duration: 1.2 });
+      // Search marker
+      markersLayer.eachLayer(layer => {
+        const pos = layer.getLatLng();
+        if (Math.abs(pos.lat - lat) < 0.01 && Math.abs(pos.lng - lng) < 0.01) {
+          setTimeout(() => layer.openPopup(), 1200);
         }
-      }
-
-      if (view === 'all') {
-        map.flyTo([10.5000, 99.2000], 6, { duration: 1.2 });
-      } else if (view === 'khaolak') {
-        map.flyTo([8.6830, 98.2405], 13, { duration: 1.2 });
-        setTimeout(() => {
-          const target = mapMarkers.find(m => m.name.includes("JW Marriott"));
-          if (target) target.marker.openPopup();
-        }, 1200);
-      } else if (view === 'saved') {
-        map.flyTo([8.8500, 99.4100], 8, { duration: 1.2 });
-        setTimeout(() => {
-          const savedTarget = mapMarkers.find(m => m.type === 'saved');
-          if (savedTarget) savedTarget.marker.openPopup();
-        }, 1200);
-      } else if (view === 'west') {
-        map.flyTo([8.3000, 98.2800], 9, { duration: 1.2 });
-      } else if (view === 'east') {
-        map.flyTo([12.8000, 100.2000], 8, { duration: 1.2 });
-      } else if (view === 'bkk') {
-        map.flyTo([13.7058, 100.4908], 11, { duration: 1.2 });
-      }
+      });
     }
 
-    // Function to focus a specific location
-    function focusLocation(lat, lng, title) {
-      map.flyTo([lat, lng], 13, { duration: 1.2 });
-      const target = mapMarkers.find(m => Math.abs(m.lat - lat) < 0.01 && Math.abs(m.lng - lng) < 0.01);
-      if (target) {
-        setTimeout(() => target.marker.openPopup(), 1200);
-      }
-    }
+    // Initialize View
+    renderSavedPlaces();
+    selectOption(1);
   </script>
 </body>
 </html>
